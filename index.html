@@ -209,9 +209,9 @@ body{
 }
 
 /* =========================
-   🔥 追加CSS（スマホのみ）
+   🔥 追加（スマホだけ）
    ========================= */
-@media screen and (hover: none) and (pointer: coarse){
+@media screen and (max-width:768px){
 
   .container{
     flex-direction:column !important;
@@ -307,42 +307,34 @@ body{
 
 <script>
 
-/* 🔥 あなたの元JSはそのままここにある前提 */
+/* 🔥 あなたの元JSはそのまま下に置く */
 
-/* 🔥 追加JS（触らない・壊さない） */
+/* 🔥 追加だけ */
 function toggleSidebar(){
-  const el = document.getElementById("sidebar");
-  if(!el) return;
-  el.classList.toggle("open");
+  document.getElementById("sidebar").classList.toggle("open");
 }
 
-(function(){
-  const sidebar = document.getElementById("sidebar");
-  if(!sidebar) return;
+let startY = 0;
+let endY = 0;
 
-  let startY = 0;
-  let endY = 0;
+const sidebar = document.getElementById("sidebar");
 
-  sidebar.addEventListener("touchstart", (e) => {
+if(sidebar){
+  sidebar.addEventListener("touchstart", e=>{
     startY = e.touches[0].clientY;
   }, {passive:true});
 
-  sidebar.addEventListener("touchmove", (e) => {
+  sidebar.addEventListener("touchmove", e=>{
     endY = e.touches[0].clientY;
   }, {passive:true});
 
-  sidebar.addEventListener("touchend", () => {
+  sidebar.addEventListener("touchend", ()=>{
     const diff = startY - endY;
 
-    if(diff > 50){
-      sidebar.classList.add("open");
-    }
-
-    if(diff < -50){
-      sidebar.classList.remove("open");
-    }
+    if(diff > 50) sidebar.classList.add("open");
+    if(diff < -50) sidebar.classList.remove("open");
   });
-})();
+}
 
 </script>
 
