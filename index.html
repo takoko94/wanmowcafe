@@ -16,7 +16,7 @@
 body{
   margin:0;
   font-family:'Yasashisa', sans-serif;
-  background:#fff7f5;
+  background:linear-gradient(180deg,#fff7f5,#ffeef4);
   user-select:none;
   padding:10px;
   letter-spacing:0.5px;
@@ -41,6 +41,7 @@ body{
   height:100vh;
   overflow-y:auto;
   padding:20px;
+  box-shadow:-5px 0 20px rgba(255,182,193,0.2);
 }
 
 /* ロゴ */
@@ -48,7 +49,6 @@ body{
   width:260px;
   display:block;
   margin:10px auto;
-  pointer-events:none;
 }
 
 /* タブ */
@@ -68,11 +68,13 @@ body{
   cursor:pointer;
   position:relative;
   font-weight:bold;
+  box-shadow:0 3px 0 rgba(255,105,180,0.2);
 }
 
 .tab.active{
-  background:hotpink;
+  background:linear-gradient(45deg,#ff9ecb,#ff69b4);
   color:white;
+  box-shadow:0 4px 0 rgba(255,20,147,0.4);
 }
 
 .tab-badge{
@@ -103,16 +105,26 @@ body{
   border:2px solid #ffd6dc;
   position:relative;
 
-  /* 🔥追加（高さ揃え） */
   display:flex;
   flex-direction:column;
   justify-content:space-between;
+
+  box-shadow:0 6px 15px rgba(255,182,193,0.35);
+  transition:all 0.2s ease;
+}
+
+.item:hover{
+  transform:translateY(-4px) scale(1.02);
 }
 
 .item img{
   width:100%;
   border-radius:10px;
-  pointer-events:none;
+  transition:all 0.2s ease;
+}
+
+.item:hover img{
+  transform:scale(1.05);
 }
 
 .count-badge{
@@ -126,15 +138,17 @@ body{
   font-size:12px;
 }
 
-/* 🔥追加（商品名高さ固定） */
+/* 商品名 */
 .item p:first-of-type{
   min-height:40px;
 }
 
-/* 🔥追加（価格位置固定） */
+/* 価格 */
 .item p:nth-of-type(2){
   margin-top:auto;
   font-weight:bold;
+  color:#ff4da6;
+  font-size:16px;
 }
 
 /* ボタン */
@@ -151,6 +165,11 @@ body{
   border-radius:999px;
   font-size:12px;
   cursor:pointer;
+  transition:all 0.12s ease;
+}
+
+.qty-btn:hover{
+  transform:scale(1.1);
 }
 
 .minus10{ background:#ffcdd2; }
@@ -177,6 +196,7 @@ body{
   padding:8px;
   margin-bottom:8px;
   border:2px dashed #ffd6dc;
+  box-shadow:0 2px 6px rgba(255,182,193,0.2);
 }
 
 .cart-remove{
@@ -192,10 +212,11 @@ body{
 .total-box{
   margin-top:15px;
   padding:10px;
-  background:#ffe4ea;
+  background:linear-gradient(45deg,#ffd6e7,#ffe4ea);
   border-radius:10px;
   font-size:20px;
   font-weight:bold;
+  box-shadow:0 3px 10px rgba(255,182,193,0.3);
 }
 
 /* ボタン */
@@ -211,6 +232,12 @@ body{
 .confirm{
   background:linear-gradient(45deg,#ff9ecb,#ff69b4);
   color:white;
+  box-shadow:0 5px 0 rgba(255,20,147,0.4);
+}
+
+.confirm:active{
+  transform:translateY(2px);
+  box-shadow:0 2px 0 rgba(255,20,147,0.4);
 }
 
 .reset{ background:#ffd1d1; }
@@ -230,22 +257,11 @@ body{
   .main,.sidebar{ width:100%; }
   .sidebar{ position:static; height:auto; }
   .item{ width:45%; }
-}
 
-/* 🔥追加（PCボタンポップ） */
-@media screen and (min-width:769px){
   .qty-btn{
-    padding:12px 14px;
+    padding:12px;
     font-size:14px;
-    font-weight:bold;
-    box-shadow:0 5px 0 rgba(255,105,180,0.35);
-    transition:all 0.12s ease;
-  }
-  .qty-btn:hover{
-    transform:translateY(-2px) scale(1.05);
-  }
-  .qty-btn:active{
-    transform:translateY(2px) scale(0.98);
+    min-width:44px;
   }
 }
 
@@ -283,7 +299,8 @@ body{
 
 <script>
 
-/* 🔥 メニュー（元のまま） */
+/* 🔥 あなたのJSそのまま */
+
 const menuData = {
 
 Drink:[
