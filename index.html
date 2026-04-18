@@ -5,12 +5,20 @@
 <title>わんも～Cafe | wanmowcafe</title>
 
 <style>
+
+/* 🔥 フォント読み込み */
+@font-face {
+  font-family: 'Yasashisa';
+  src: url('YasashisaGothicBold-V2.otf') format('opentype');
+}
+
 body{
   margin:0;
-  font-family:sans-serif;
+  font-family:'Yasashisa', sans-serif;
   background:#fff7f5;
   user-select:none;
   padding:10px;
+  letter-spacing:0.5px;
 }
 
 /* 中央寄せ */
@@ -34,6 +42,7 @@ body{
   padding:20px;
 }
 
+/* ロゴ */
 .logo{
   width:260px;
   display:block;
@@ -57,6 +66,7 @@ body{
   border-radius:10px;
   cursor:pointer;
   position:relative;
+  font-weight:bold;
 }
 
 .tab.active{
@@ -135,8 +145,6 @@ body{
   color:white;
 }
 
-.qty-btn:active{ transform:scale(0.85); }
-
 /* カート */
 .cart-title{
   font-size:20px;
@@ -163,6 +171,7 @@ body{
   cursor:pointer;
 }
 
+/* 合計 */
 .total-box{
   margin-top:15px;
   padding:10px;
@@ -205,6 +214,7 @@ body{
   .sidebar{ position:static; height:auto; }
   .item{ width:45%; }
 }
+
 </style>
 </head>
 
@@ -239,14 +249,16 @@ body{
 
 <script>
 
-/* 🔥 ここだけ触ればOK */
+/* 🔥 メニュー（ここだけ編集すれば増える） */
 const menuData = {
+
 Drink:[
 ["も～も～ミルクラテ",3000,"milk_latte.png"],
 ["わんプレッソラテ",3000,"wanpresso.png"],
 ["も～っとしゅわっとクリームソーダ",3000,"cream_soda.png"],
 ["ちょっぴりビターなわんコーヒーフロート",3000,"coffee_float.png"]
 ],
+
 Food:[
 ["わんわんサンド",3000,"wanwansand.png"],
 ["わんも～弁当",4000,"wanmow_bento.png"],
@@ -255,32 +267,39 @@ Food:[
 ["も～も～ハニートースト",4000,"honey_toast.png"],
 ["まんぷくハンバーグ",4000,"hamburg.png"]
 ],
+
 Dessert:[
 ["いぬぷりん（いちご味）",3000,"pudding_strawberry.png"],
 ["いぬぷりん（マンゴー味）",3000,"pudding_mango.png"]
 ],
+
 Joint:[
 ["ぷにっとわんくーる",3000,"wan_cool.png"],
 ["ぷにっとも～くーる",3000,"mow_cool.png"]
 ],
+
 Rescue:[
 ["も～も～点滴いちごみるく",3000,"strawberry_milk.png"],
 ["わんわんレスキューサンド",3000,"rescue_sand.png"],
 ["わんわんレスキュードック",3000,"rescue_dog.png"]
 ],
+
 期間限定:[
 ["しゅわしゅわオレンジソーダ",5000,"orange_soda.png"],
 ["わんわんキッシュ",5000,"wan_quiche.png"],
 ["も～も～キッシュ",5000,"mow_quiche.png"]
 ],
+
 Secret:[
 ["いちご",4000,"secret_strawberry.png"]
 ]
+
 };
 
 let currentTab="Drink";
 let cart={};
 
+/* 合計 */
 function getTotal(){
 let total=0;
 Object.values(menuData).forEach(list=>{
@@ -291,18 +310,21 @@ if(cart[item[0]]) total+=item[1]*cart[item[0]];
 return total;
 }
 
+/* 全更新 */
 function renderAll(){
 renderTabs();
 renderMenu();
 updateUI();
 }
 
+/* タブ */
 function renderTabs(){
 const tabbar=document.getElementById("tabbar");
 tabbar.innerHTML="";
 
 Object.keys(menuData).forEach(key=>{
 let count=0;
+
 menuData[key].forEach(item=>{
 if(cart[item[0]]) count+=cart[item[0]];
 });
@@ -318,11 +340,12 @@ badge.innerText=count;
 tab.appendChild(badge);
 }
 
-tab.onclick=()=>{ currentTab=key; renderAll(); };
+tab.onclick=()=>{currentTab=key;renderAll();};
 tabbar.appendChild(tab);
 });
 }
 
+/* メニュー */
 function renderMenu(){
 const menu=document.getElementById("menu");
 menu.innerHTML="";
@@ -352,6 +375,7 @@ menu.appendChild(div);
 });
 }
 
+/* 操作 */
 function change(name,delta){
 cart[name]=(cart[name]||0)+delta;
 if(cart[name]<=0) delete cart[name];
@@ -368,6 +392,7 @@ delete cart[name];
 renderAll();
 }
 
+/* カート */
 function updateUI(){
 document.getElementById("total").innerText=getTotal();
 
@@ -382,6 +407,7 @@ ${item} ×${cart[item]}
 document.getElementById("cart").innerHTML=html||"注文なし";
 }
 
+/* その他 */
 function resetCart(){
 cart={};
 renderAll();
