@@ -3,96 +3,72 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>わんも〜Cafe | wanmowcafe</title>
+<title>わんも〜Cafe</title>
 
 <style>
 
-/* ===== フォント ===== */
 @font-face {
   font-family: 'Yasashisa';
   src: url('YasashisaGothicBold-V2.otf') format('opentype');
 }
 
-/* ===== 背景 ===== */
 body{
   margin:0;
   font-family:'Yasashisa', sans-serif;
   background:linear-gradient(180deg,#fffaf5,#f7efe8);
-  user-select:none;
-  padding:10px;
   color:#5c4b42;
+  padding:10px;
 }
 
-/* 牛柄うっすら */
-body::before{
-  content:"";
-  position:fixed;
-  width:100%;
-  height:100%;
-  background-image:
-    radial-gradient(#e8dcd2 15%, transparent 16%),
-    radial-gradient(#e8dcd2 15%, transparent 16%);
-  background-size:120px 120px;
-  background-position:0 0,60px 60px;
-  opacity:0.07;
-  z-index:-1;
-}
-
-/* ===== レイアウト ===== */
 .container{
   display:flex;
-  justify-content:center;
   max-width:1200px;
-  margin:0 auto;
+  margin:auto;
 }
 
 .main{ width:75%; }
 
 .sidebar{
   width:25%;
+  padding:20px;
   background:#fffdfb;
   border-left:3px solid #e5d6cc;
-  position:sticky;
-  top:0;
-  height:100vh;
-  overflow-y:auto;
-  padding:20px;
-  border-radius:20px;
-}
-
-/* ===== ロゴ ===== */
-.logo{
-  width:260px;
-  display:block;
-  margin:10px auto;
 }
 
 /* ===== タブ ===== */
 .tabbar{
   display:flex;
-  justify-content:flex-start;
-  overflow-x:auto;
-  white-space:nowrap;
-  background:#f3ebe5;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:8px;
   padding:10px;
+  background:#f3ebe5;
   border-radius:15px;
 }
 
 .tab{
-  margin:0 5px;
+  position:relative;
   padding:8px 16px;
   background:#fff;
   border-radius:999px;
   cursor:pointer;
   font-weight:bold;
-  font-size:14px;
-  flex-shrink:0;
-  box-shadow:0 2px 4px rgba(0,0,0,0.08);
 }
 
 .tab.active{
   background:#d9a5a5;
   color:white;
+}
+
+.tab-badge{
+  position:absolute;
+  top:-6px;
+  right:-6px;
+  background:#cfa18d;
+  color:white;
+  font-size:11px;
+  padding:2px 6px;
+  border-radius:999px;
 }
 
 /* ===== メニュー ===== */
@@ -101,151 +77,42 @@ body::before{
   flex-wrap:wrap;
   justify-content:center;
   gap:15px;
-  padding:10px;
 }
 
 .item{
   width:200px;
   background:#fffdfb;
-  border-radius:18px;
-  padding:12px;
-  border:1.5px solid #e8dcd2;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  box-shadow:0 6px 12px rgba(0,0,0,0.06);
-  transition:0.2s;
-}
-
-.item:hover{
-  transform:translateY(-4px);
+  border-radius:15px;
+  padding:10px;
+  border:1px solid #e5d6cc;
 }
 
 .item img{
   width:100%;
-  border-radius:12px;
-}
-
-.count-badge{
-  position:absolute;
-  top:8px;
-  right:8px;
-  background:#cfa18d;
-  color:white;
-  border-radius:999px;
-  padding:4px 8px;
-  font-size:12px;
+  border-radius:10px;
 }
 
 /* ===== ボタン ===== */
-.item div{
-  display:flex;
-  justify-content:center;
-  gap:5px;
-  margin-top:6px;
-}
-
 .qty-btn{
-  border-radius:10px;
-  padding:8px 10px;
-  font-size:13px;
-  background:#f4ede7;
-  color:#5c4b42;
+  padding:6px 8px;
   border:none;
+  border-radius:8px;
+  background:#f4ede7;
   cursor:pointer;
-  box-shadow:0 2px 4px rgba(0,0,0,0.08);
 }
 
-.qty-btn:hover{
-  background:#e8ddd5;
-}
-
-.qty-btn:active{
-  transform:translateY(1px);
-}
-
-.minus10{ background:#f0d6d6; }
-.minus1{ background:#f5e1e1; }
-.zero{ background:#eaeaea; }
-.add1{ background:#e7d8cf; }
-
-.add10{
-  background:#cfa18d;
-  color:white;
-}
+.add10{ background:#cfa18d; color:white; }
 
 /* ===== カート ===== */
-.cart-title{
-  font-size:18px;
-  font-weight:bold;
-}
-
 .cart-item{
   display:flex;
   justify-content:space-between;
-  align-items:center;
-  background:#fff;
-  border-radius:10px;
-  padding:8px;
-  margin-bottom:8px;
-  border:1px solid #e5d6cc;
+  margin-bottom:5px;
 }
 
-.cart-remove{
-  background:#d9a5a5;
-  border:none;
-  border-radius:50%;
-  width:22px;
-  height:22px;
-  cursor:pointer;
-  color:white;
-}
-
-/* ===== 合計 ===== */
 .total-box{
-  margin-top:15px;
-  padding:10px;
-  background:#f3ebe5;
-  border-radius:12px;
-  font-size:18px;
-  font-weight:bold;
-}
-
-/* ===== ボタン ===== */
-.confirm,.reset{
-  width:100%;
-  padding:12px;
   margin-top:10px;
-  border-radius:999px;
-  font-size:15px;
   font-weight:bold;
-  border:none;
-}
-
-.confirm{
-  background:#b88976;
-  color:white;
-}
-
-.reset{
-  background:#e6d5cc;
-}
-
-/* ===== 履歴 ===== */
-.history-box{
-  margin-top:20px;
-  background:#fff;
-  border-radius:10px;
-  padding:10px;
-  border:1px solid #e5d6cc;
-}
-
-/* ===== スマホ ===== */
-@media (max-width:800px){
-  .container{ flex-direction:column; }
-  .main,.sidebar{ width:100%; }
-  .sidebar{ position:static; height:auto; }
-  .item{ width:45%; }
 }
 
 </style>
@@ -256,33 +123,20 @@ body::before{
 <div class="container">
 
 <div class="main">
-<img src="logo.png" class="logo">
 <div class="tabbar" id="tabbar"></div>
 <div id="menu" class="menu"></div>
 </div>
 
 <div class="sidebar">
-<div class="cart-title">注文内容</div>
 <div id="cart">注文なし</div>
-
-<div class="total-box">
-合計: <span id="total">0</span>円
-</div>
-
-<button class="confirm" onclick="confirmOrder()">確定する</button>
-<button class="reset" onclick="resetCart()">リセット</button>
-
-<div class="history-box">
-<h3>履歴</h3>
-<div id="history">なし</div>
-</div>
+<div class="total-box">合計: <span id="total">0</span>円</div>
 </div>
 
 </div>
 
 <script>
 
-/* ===== メニュー（完全復活版） ===== */
+/* ===== 元の完全メニュー復元 ===== */
 const menuData = {
 
 Drink:[
@@ -332,27 +186,9 @@ Secret:[
 let currentTab="Drink";
 let cart={};
 
-/* 円フォーマット */
-function yen(num){
-  return num.toLocaleString();
-}
+function yen(n){return n.toLocaleString();}
 
-function getTotal(){
-let total=0;
-Object.values(menuData).forEach(list=>{
-list.forEach(item=>{
-if(cart[item[0]]) total+=item[1]*cart[item[0]];
-});
-});
-return total;
-}
-
-function renderAll(){
-renderTabs();
-renderMenu();
-updateUI();
-}
-
+/* ===== タブ ===== */
 function renderTabs(){
 const tabbar=document.getElementById("tabbar");
 tabbar.innerHTML="";
@@ -379,28 +215,22 @@ tabbar.appendChild(tab);
 });
 }
 
+/* ===== メニュー ===== */
 function renderMenu(){
 const menu=document.getElementById("menu");
 menu.innerHTML="";
 
 menuData[currentTab].forEach(item=>{
-const count=cart[item[0]]||0;
-
 const div=document.createElement("div");
 div.className="item";
 
 div.innerHTML=`
-${count>0?`<div class="count-badge">×${count}</div>`:""}
 <img src="${item[2]}">
 <p>${item[0]}</p>
 <p>${yen(item[1])}円</p>
-
 <div>
-<button class="qty-btn minus10" onclick="change('${item[0]}',-10)">-10</button>
-<button class="qty-btn minus1" onclick="change('${item[0]}',-1)">-1</button>
-<button class="qty-btn zero" onclick="clearItem('${item[0]}')">0</button>
-<button class="qty-btn add1" onclick="change('${item[0]}',1)">+1</button>
-<button class="qty-btn add10" onclick="change('${item[0]}',10)">+10</button>
+<button class="qty-btn" onclick="change('${item[0]}',-1)">-1</button>
+<button class="qty-btn add10" onclick="change('${item[0]}',1)">+1</button>
 </div>
 `;
 
@@ -408,54 +238,31 @@ menu.appendChild(div);
 });
 }
 
+/* ===== カート ===== */
 function change(name,delta){
 cart[name]=(cart[name]||0)+delta;
 if(cart[name]<=0) delete cart[name];
 renderAll();
 }
 
-function clearItem(name){
-delete cart[name];
-renderAll();
-}
+function renderAll(){
+renderTabs();
+renderMenu();
 
-function removeFromCart(name){
-delete cart[name];
-renderAll();
-}
-
-function updateUI(){
-document.getElementById("total").innerText=yen(getTotal());
-
+let total=0;
 let html="";
-for(let item in cart){
-html+=`
-<div class="cart-item">
-${item} ×${cart[item]}
-<button class="cart-remove" onclick="removeFromCart('${item}')">×</button>
-</div>`;
+
+Object.values(menuData).forEach(list=>{
+list.forEach(item=>{
+if(cart[item[0]]){
+total+=item[1]*cart[item[0]];
+html+=`<div class="cart-item">${item[0]} ×${cart[item[0]]}</div>`;
 }
+});
+});
+
 document.getElementById("cart").innerHTML=html||"注文なし";
-}
-
-function resetCart(){
-cart={};
-renderAll();
-}
-
-function confirmOrder(){
-if(Object.keys(cart).length===0) return;
-
-let text="";
-for(let item in cart){
-text+=`${item} ×${cart[item]} / `;
-}
-
-document.getElementById("history").innerHTML =
-`<div>${yen(getTotal())}円 | ${text}</div>` +
-document.getElementById("history").innerHTML;
-
-resetCart();
+document.getElementById("total").innerText=yen(total);
 }
 
 renderAll();
