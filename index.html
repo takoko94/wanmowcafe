@@ -10,13 +10,20 @@ body{
   font-family:sans-serif;
   background:#fff7f5;
   user-select:none;
+  padding:10px;
 }
 
-.container{ display:flex; }
-.main{ width:70%; }
+/* 中央寄せ */
+.container{
+  display:flex;
+  justify-content:center;
+  max-width:1200px;
+  margin:0 auto;
+}
 
+.main{ width:75%; }
 .sidebar{
-  width:30%;
+  width:25%;
   background:#fffafc;
   border-left:4px solid #ffc0cb;
   position:sticky;
@@ -36,6 +43,7 @@ body{
 /* タブ */
 .tabbar{
   display:flex;
+  justify-content:center;
   overflow-x:auto;
   background:#ffe4ea;
   padding:10px;
@@ -78,7 +86,7 @@ body{
 }
 
 .item{
-  width:220px;
+  width:200px;
   background:white;
   border-radius:15px;
   padding:12px;
@@ -165,6 +173,7 @@ body{
   font-weight:bold;
 }
 
+/* ボタン */
 .confirm,.reset{
   width:100%;
   padding:12px;
@@ -181,12 +190,34 @@ body{
 
 .reset{ background:#ffd1d1; }
 
+/* 履歴 */
 .history-box{
   margin-top:20px;
   background:#fff;
   border-radius:10px;
   padding:10px;
   border:2px solid #ffd6dc;
+}
+
+/* スマホ対応 */
+@media (max-width:800px){
+  .container{
+    flex-direction:column;
+    max-width:100%;
+  }
+
+  .main,.sidebar{
+    width:100%;
+  }
+
+  .sidebar{
+    position:static;
+    height:auto;
+  }
+
+  .item{
+    width:45%;
+  }
 }
 </style>
 </head>
@@ -222,51 +253,18 @@ body{
 
 <script>
 
-/* 🔥 ここが唯一のデータ（これ以外にmenuDataを作らない） */
 const menuData = {
-
 Drink:[
 ["も～も～ミルクラテ",3000,"milk_latte.png"],
-["わんプレッソラテ",3000,"wanpresso.png"],
-["も～っとしゅわっとクリームソーダ",3000,"cream_soda.png"],
-["ちょっぴりビターなわんコーヒーフロート",3000,"coffee_float.png"]
+["わんプレッソラテ",3000,"wanpresso.png"]
 ],
-
 Food:[
-["わんわんサンド",3000,"wanwansand.png"],
 ["わんも～弁当",4000,"wanmow_bento.png"],
-["わんも～プレート",6000,"wanmow_plate.png"],
-["ぎゅっとぽかぽかクリームシチュー",3000,"mowmow_stew.png"],
-["も～も～ハニートースト",4000,"honey_toast.png"],
-["まんぷくハンバーグ",4000,"hamburg.png"]
+["わんも～プレート",6000,"wanmow_plate.png"]
 ],
-
-Dessert:[
-["いぬぷりん（いちご味）",3000,"pudding_strawberry.png"],
-["いぬぷりん（マンゴー味）",3000,"pudding_mango.png"]
-],
-
-Joint:[
-["ぷにっとわんくーる",3000,"wan_cool.png"],
-["ぷにっとも～くーる",3000,"mow_cool.png"]
-],
-
 Rescue:[
-["も～も～点滴いちごみるく",3000,"strawberry_milk.png"],
-["わんわんレスキューサンド",3000,"rescue_sand.png"],
-["わんわんレスキュードック",3000,"rescue_dog.png"]
-],
-
-期間限定:[
-["しゅわしゅわオレンジソーダ",5000,"orange_soda.png"],
-["わんわんキッシュ",5000,"wan_quiche.png"],
-["も～も～キッシュ",5000,"mow_quiche.png"]
-],
-
-Secret:[
-["いちご",4000,"secret_strawberry.png"]
+["も～も～点滴いちごみるく",3000,"strawberry_milk.png"]
 ]
-
 };
 
 let currentTab="Drink";
@@ -274,13 +272,11 @@ let total=0;
 let cart={};
 let historyList=[];
 
-/* タブ */
 function renderTabs(){
 const tabbar=document.getElementById("tabbar");
 tabbar.innerHTML="";
 
 Object.keys(menuData).forEach(key=>{
-
 let count=0;
 menuData[key].forEach(item=>{
 if(cart[item[0]]) count+=cart[item[0]];
@@ -306,7 +302,6 @@ tabbar.appendChild(tab);
 });
 }
 
-/* メニュー */
 function renderMenu(){
 const menu=document.getElementById("menu");
 menu.innerHTML="";
@@ -336,7 +331,6 @@ menu.appendChild(div);
 });
 }
 
-/* カート */
 function updateUI(){
 document.getElementById("total").innerText=total;
 
@@ -352,7 +346,6 @@ ${item} ×${cart[item]}
 document.getElementById("cart").innerHTML=html||"注文なし";
 }
 
-/* 操作 */
 function addItem(name,price,qty){
 total+=price*qty;
 cart[name]=(cart[name]||0)+qty;
@@ -363,37 +356,34 @@ function removeItem(name,price,qty){
 if(!cart[name]) return;
 cart[name]-=qty;
 total-=price*qty;
-
 if(cart[name]<=0) delete cart[name];
-if(total<0) total=0;
-
 renderAll();
 }
 
 function clearItem(name){
-if(!cart[name]) return;
-
-let price=0;
-Object.values(menuData).forEach(list=>{
-list.forEach(item=>{
-if(item[0]===name) price=item[1];
-});
-});
-
-total-=price*cart[name];
 delete cart[name];
-
+recalculateTotal();
 renderAll();
 }
 
 function removeFromCart(name){
-clearItem(name);
+delete cart[name];
+recalculateTotal();
+renderAll();
 }
 
-/* その他 */
-function resetCart(){
+function recalculateTotal(){
 total=0;
+for(let key in menuData){
+menuData[key].forEach(item=>{
+if(cart[item[0]]) total+=item[1]*cart[item[0]];
+});
+}
+}
+
+function resetCart(){
 cart={};
+total=0;
 renderAll();
 }
 
@@ -412,14 +402,12 @@ historyList.map(h=>`<div>${h}</div>`).join("");
 resetCart();
 }
 
-/* 🔥 全部再描画 */
 function renderAll(){
 renderTabs();
 renderMenu();
 updateUI();
 }
 
-/* 初期 */
 renderAll();
 
 </script>
