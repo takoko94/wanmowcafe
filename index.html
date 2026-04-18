@@ -15,7 +15,7 @@ body {
 .container { display:flex; }
 .main { width:70%; }
 
-/* 右カート */
+/* 右 */
 .sidebar {
   width:30%;
   background:#fffafc;
@@ -51,11 +51,23 @@ body {
   background:white;
   border-radius:10px;
   cursor:pointer;
+  position:relative;
 }
 
 .tab.active {
   background:hotpink;
   color:white;
+}
+
+.tab-badge {
+  position:absolute;
+  top:-5px;
+  right:-5px;
+  background:hotpink;
+  color:white;
+  font-size:11px;
+  padding:3px 6px;
+  border-radius:999px;
 }
 
 /* メニュー */
@@ -82,7 +94,7 @@ body {
   pointer-events:none;
 }
 
-/* 個数表示 */
+/* 個数 */
 .count-badge {
   position:absolute;
   top:8px;
@@ -92,7 +104,6 @@ body {
   border-radius:999px;
   padding:4px 8px;
   font-size:12px;
-  font-weight:bold;
 }
 
 /* ボタン */
@@ -123,11 +134,27 @@ body {
 .cart-title { font-size:20px; font-weight:bold; }
 
 .cart-item {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
   background:#fff;
   border-radius:10px;
   padding:8px;
   margin-bottom:8px;
   border:2px dashed #ffd6dc;
+}
+
+.cart-remove {
+  background:#ffb3c1;
+  border:none;
+  border-radius:50%;
+  width:22px;
+  height:22px;
+  cursor:pointer;
+}
+
+.cart-remove:active {
+  transform:scale(0.8);
 }
 
 .total-box {
@@ -156,7 +183,9 @@ body {
 
 .reset { background:#ffd1d1; }
 
-.confirm:active,.reset:active { transform:scale(0.9); }
+.confirm:active,.reset:active {
+  transform:scale(0.9);
+}
 
 /* 履歴 */
 .history-box {
@@ -208,49 +237,9 @@ body {
 
 <script>
 const menuData = {
-
-"Drink":[
-["も～も～ミルクラテ",3000,"milk_latte.png"],
-["わんプレッソラテ",3000,"wanpresso.png"],
-["も～っとしゅわっとクリームソーダ",3000,"cream_soda.png"],
-["ちょっぴりビターなわんコーヒーフロート",3000,"coffee_float.png"]
-],
-
-"Food":[
-["わんわんサンド",3000,"wanwansand.png"],
-["わんも～弁当",4000,"wanmow_bento.png"],
-["わんも～プレート",6000,"wanmow_plate.png"],
-["ぎゅっとぽかぽかクリームシチュー",3000,"mowmow_stew.png"],
-["も～も～ハニートースト",4000,"honey_toast.png"],
-["まんぷくハンバーグ",4000,"hamburg.png"]
-],
-
-"Dessert":[
-["いぬぷりん（いちご味）",3000,"pudding_strawberry.png"],
-["いぬぷりん（マンゴー味）",3000,"pudding_mango.png"]
-],
-
-"Joint":[
-["ぷにっとわんくーる",3000,"wan_cool.png"],
-["ぷにっとも～くーる",3000,"mow_cool.png"]
-],
-
-"Rescue":[
-["も～も～点滴いちごみるく",3000,"strawberry_milk.png"],
-["わんわんレスキューサンド",3000,"rescue_sand.png"],
-["わんわんレスキュードック",3000,"rescue_dog.png"]
-],
-
-"期間限定":[
-["しゅわしゅわオレンジソーダ",5000,"orange_soda.png"],
-["わんわんキッシュ",5000,"wan_quiche.png"],
-["も～も～キッシュ",5000,"mow_quiche.png"]
-],
-
-"Secret":[
-["いちご",4000,"secret_strawberry.png"]
-]
-
+"Drink":[["も～も～ミルクラテ",3000,"milk_latte.png"]],
+"Food":[["わんも～弁当",4000,"wanmow_bento.png"]],
+"Rescue":[["も～も～点滴いちごみるく",3000,"strawberry_milk.png"]]
 };
 
 let currentTab="Drink";
@@ -258,18 +247,40 @@ let total=0;
 let cart={};
 let historyList=[];
 
+/* タブ */
 function renderTabs(){
 const tabbar=document.getElementById("tabbar");
 tabbar.innerHTML="";
+
 for(let key in menuData){
+
+let count=0;
+menuData[key].forEach(item=>{
+if(cart[item[0]]) count+=cart[item[0]];
+});
+
 const div=document.createElement("div");
 div.className="tab"+(key===currentTab?" active":"");
 div.innerText=key;
-div.onclick=()=>{currentTab=key;renderTabs();renderMenu();};
+
+if(count>0){
+const badge=document.createElement("div");
+badge.className="tab-badge";
+badge.innerText=count;
+div.appendChild(badge);
+}
+
+div.onclick=()=>{
+currentTab=key;
+renderTabs();
+renderMenu();
+};
+
 tabbar.appendChild(div);
 }
 }
 
+/* メニュー */
 function renderMenu(){
 const menu=document.getElementById("menu");
 menu.innerHTML="";
@@ -277,6 +288,7 @@ menu.className="menu";
 
 menuData[currentTab].forEach(item=>{
 const count=cart[item[0]]||0;
+
 const div=document.createElement("div");
 div.className="item";
 
@@ -299,6 +311,7 @@ menu.appendChild(div);
 });
 }
 
+/* ポン */
 function popEffect(){
 const el=document.querySelector(".total-box");
 el.classList.remove("pop");
@@ -306,6 +319,7 @@ void el.offsetWidth;
 el.classList.add("pop");
 }
 
+/* 操作 */
 function addItem(name,price,qty){
 total+=price*qty;
 cart[name]=(cart[name]||0)+qty;
@@ -338,21 +352,47 @@ if(item[0]===name)price=item[1];
 total-=price*cart[name];
 delete cart[name];
 
-if(total<0)total=0;
+updateUI();
+renderMenu();
+}
+
+/* カート削除 */
+function removeFromCart(name){
+if(!cart[name])return;
+
+let price=0;
+for(let key in menuData){
+menuData[key].forEach(item=>{
+if(item[0]===name)price=item[1];
+});
+}
+
+total-=price*cart[name];
+delete cart[name];
 
 updateUI();
 renderMenu();
 }
 
+/* UI */
 function updateUI(){
 document.getElementById("total").innerText=total;
+
 let text="";
 for(let item in cart){
-text+=`<div class="cart-item">${item} ×${cart[item]}</div>`;
-}
-document.getElementById("cart").innerHTML=text||"注文なし";
+text+=`
+<div class="cart-item">
+${item} ×${cart[item]}
+<button class="cart-remove" onclick="removeFromCart('${item}')">×</button>
+</div>`;
 }
 
+document.getElementById("cart").innerHTML=text||"注文なし";
+
+renderTabs();
+}
+
+/* その他 */
 function resetCart(){
 total=0;
 cart={};
@@ -362,13 +402,16 @@ renderMenu();
 
 function confirmOrder(){
 if(Object.keys(cart).length===0)return;
+
 let text="";
 for(let item in cart){
 text+=`${item} ×${cart[item]} / `;
 }
+
 historyList.unshift(`¥${total} | ${text}`);
 document.getElementById("history").innerHTML=
 historyList.map(h=>`<div>${h}</div>`).join("");
+
 resetCart();
 }
 
