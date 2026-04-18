@@ -11,6 +11,28 @@ body {
   background: #fff7f5;
 }
 
+/* 全体レイアウト */
+.container {
+  display: flex;
+}
+
+/* 左（メニュー側） */
+.main {
+  width: 70%;
+}
+
+/* 右（カート） */
+.sidebar {
+  width: 30%;
+  background: #fff;
+  border-left: 3px solid #ffd6dc;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 15px;
+}
+
 /* ロゴ */
 .logo {
   width: 250px;
@@ -18,30 +40,26 @@ body {
   margin: 10px auto;
 }
 
-/* タブバー（上固定） */
+/* タブ */
 .tabbar {
-  position: sticky;
-  top: 0;
   display: flex;
   overflow-x: auto;
   background: #ffe4ea;
   padding: 10px;
-  z-index: 1000;
+  position: sticky;
+  top: 0;
 }
 
-/* タブボタン */
 .tab {
-  flex: none;
   margin: 0 5px;
   padding: 10px 15px;
-  border-radius: 10px;
   background: white;
+  border-radius: 10px;
   cursor: pointer;
-  font-weight: bold;
 }
 
 .tab.active {
-  background: #ff69b4;
+  background: hotpink;
   color: white;
 }
 
@@ -64,7 +82,6 @@ body {
 
 .item img {
   width: 100%;
-  border-radius: 10px;
 }
 
 /* ボタン */
@@ -76,41 +93,58 @@ button {
   cursor: pointer;
 }
 
-.add1 { background: #ffc0cb; }
-.add10 { background: #ff69b4; color: white; }
+.add1 { background: pink; }
+.add10 { background: hotpink; color: white; }
 .minus1 { background: #ddd; }
 .minus10 { background: #aaa; color: white; }
 
 /* カート */
-.cart {
-  background: white;
-  margin: 10px;
-  padding: 10px;
-  border-radius: 10px;
-  text-align: center;
+.cart-title {
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
 .total {
   font-size: 20px;
-  text-align: center;
+  margin-top: 10px;
 }
-
 </style>
 </head>
 
 <body>
 
-<img src="logo.png" class="logo">
+<div class="container">
 
-<!-- 上タブ -->
-<div class="tabbar" id="tabbar"></div>
+  <!-- 左 -->
+  <div class="main">
 
-<!-- メニュー -->
-<div id="menu"></div>
+    <img src="logo.png" class="logo">
 
-<!-- カート -->
-<div class="cart" id="cart">注文なし</div>
-<div class="total">合計: ¥<span id="total">0</span></div>
+    <div class="tabbar" id="tabbar"></div>
+
+    <div id="menu"></div>
+
+  </div>
+
+  <!-- 右カート -->
+  <div class="sidebar">
+
+    <div class="cart-title">🧾 注文内容</div>
+    <div id="cart">注文なし</div>
+
+    <div class="total">
+      合計: ¥<span id="total">0</span>
+    </div>
+
+    <button onclick="confirmOrder()">注文確定</button>
+    <button onclick="resetCart()">リセット</button>
+
+    <h3>履歴</h3>
+    <div id="history">なし</div>
+
+  </div>
+
+</div>
 
 <script>
 const menuData = {
@@ -130,28 +164,27 @@ const menuData = {
 let currentTab = "Drink";
 let total = 0;
 let cart = {};
+let historyList = [];
 
-/* タブ作成 */
 function renderTabs() {
   const tabbar = document.getElementById("tabbar");
   tabbar.innerHTML = "";
 
   for (let key in menuData) {
-    const btn = document.createElement("div");
-    btn.className = "tab" + (key === currentTab ? " active" : "");
-    btn.innerText = key;
+    const div = document.createElement("div");
+    div.className = "tab" + (key === currentTab ? " active" : "");
+    div.innerText = key;
 
-    btn.onclick = () => {
+    div.onclick = () => {
       currentTab = key;
       renderTabs();
       renderMenu();
     };
 
-    tabbar.appendChild(btn);
+    tabbar.appendChild(div);
   }
 }
 
-/* メニュー表示 */
 function renderMenu() {
   const menu = document.getElementById("menu");
   menu.innerHTML = "";
@@ -166,6 +199,8 @@ function renderMenu() {
       <p>${item[0]}</p>
       <p>¥${item[1]}</p>
 
+      <button onclick="removeItem('${item[0]}', ${item[1]}, 10)">-10</button>
+      <button onclick="removeItem('${item[0]}', ${item[1]}, 1)">-1</button>
       <button onclick="addItem('${item[0]}', ${item[1]}, 1)">+1</button>
       <button onclick="addItem('${item[0]}', ${item[1]}, 10)">+10</button>
     `;
@@ -174,15 +209,23 @@ function renderMenu() {
   });
 }
 
-/* 加算 */
 function addItem(name, price, qty) {
   total += price * qty;
   cart[name] = (cart[name] || 0) + qty;
+  updateUI();
+}
+
+function removeItem(name, price, qty) {
+  if (!cart[name]) return;
+  cart[name] -= qty;
+  total -= price * qty;
+
+  if (cart[name] <= 0) delete cart[name];
+  if (total < 0) total = 0;
 
   updateUI();
 }
 
-/* UI更新 */
 function updateUI() {
   document.getElementById("total").innerText = total;
 
@@ -194,7 +237,27 @@ function updateUI() {
   document.getElementById("cart").innerHTML = text || "注文なし";
 }
 
-/* 初期表示 */
+function resetCart() {
+  total = 0;
+  cart = {};
+  updateUI();
+}
+
+function confirmOrder() {
+  if (Object.keys(cart).length === 0) return;
+
+  let text = "";
+  for (let item in cart) {
+    text += `${item} ×${cart[item]} / `;
+  }
+
+  historyList.unshift(`¥${total} | ${text}`);
+  document.getElementById("history").innerHTML =
+    historyList.map(h => `<div>${h}</div>`).join("");
+
+  resetCart();
+}
+
 renderTabs();
 renderMenu();
 </script>
