@@ -13,29 +13,28 @@
   src: url('YasashisaGothicBold-V2.otf') format('opentype');
 }
 
-/* ===== 背景（ミルク×いちご＋牛柄） ===== */
+/* ===== 背景（カフェ調） ===== */
 body{
   margin:0;
   font-family:'Yasashisa', sans-serif;
-  background:
-    radial-gradient(circle at 20% 20%, #fff 0%, transparent 40%),
-    radial-gradient(circle at 80% 80%, #ffe4ea 0%, transparent 40%),
-    linear-gradient(180deg,#fff7f5,#ffe4ea);
+  background:linear-gradient(180deg,#fffaf5,#f7efe8);
   user-select:none;
   padding:10px;
+  color:#5c4b42;
 }
 
+/* 牛柄（超薄） */
 body::before{
   content:"";
   position:fixed;
   width:100%;
   height:100%;
   background-image:
-    radial-gradient(#ffd6dc 15%, transparent 16%),
-    radial-gradient(#ffd6dc 15%, transparent 16%);
+    radial-gradient(#e8dcd2 15%, transparent 16%),
+    radial-gradient(#e8dcd2 15%, transparent 16%);
   background-size:120px 120px;
   background-position:0 0,60px 60px;
-  opacity:0.15;
+  opacity:0.07;
   z-index:-1;
 }
 
@@ -51,8 +50,8 @@ body::before{
 
 .sidebar{
   width:25%;
-  background:#fffafc;
-  border-left:4px solid #ffc0cb;
+  background:#fffdfb;
+  border-left:3px solid #e5d6cc;
   position:sticky;
   top:0;
   height:100vh;
@@ -73,35 +72,25 @@ body::before{
   display:flex;
   justify-content:center;
   overflow-x:auto;
-  background:#ffe4ea;
+  background:#f3ebe5;
   padding:10px;
   border-radius:15px;
 }
 
 .tab{
   margin:0 5px;
-  padding:10px 18px;
-  background:white;
+  padding:8px 16px;
+  background:#fff;
   border-radius:999px;
   cursor:pointer;
   font-weight:bold;
-  box-shadow:0 3px 6px rgba(0,0,0,0.1);
+  font-size:14px;
+  box-shadow:0 2px 4px rgba(0,0,0,0.08);
 }
 
 .tab.active{
-  background:linear-gradient(45deg,#ff9ecb,#ff69b4);
+  background:#d9a5a5;
   color:white;
-}
-
-.tab-badge{
-  position:absolute;
-  top:-5px;
-  right:-5px;
-  background:hotpink;
-  color:white;
-  font-size:11px;
-  padding:3px 6px;
-  border-radius:999px;
 }
 
 /* ===== メニュー ===== */
@@ -115,31 +104,31 @@ body::before{
 
 .item{
   width:200px;
-  background:white;
-  border-radius:20px;
+  background:#fffdfb;
+  border-radius:18px;
   padding:12px;
-  border:2px solid #ffd6dc;
+  border:1.5px solid #e8dcd2;
   display:flex;
   flex-direction:column;
   justify-content:space-between;
-  box-shadow:0 8px 16px rgba(255,182,193,0.35);
-  transition:all 0.2s;
+  box-shadow:0 6px 12px rgba(0,0,0,0.06);
+  transition:0.2s;
 }
 
 .item:hover{
-  transform:translateY(-6px) scale(1.02);
+  transform:translateY(-4px);
 }
 
 .item img{
   width:100%;
-  border-radius:15px;
+  border-radius:12px;
 }
 
 .count-badge{
   position:absolute;
   top:8px;
   right:8px;
-  background:hotpink;
+  background:#cfa18d;
   color:white;
   border-radius:999px;
   padding:4px 8px;
@@ -155,39 +144,37 @@ body::before{
 }
 
 .qty-btn{
+  border-radius:10px;
+  padding:8px 10px;
+  font-size:13px;
+  background:#f4ede7;
+  color:#5c4b42;
   border:none;
-  border-radius:999px;
-  padding:10px 12px;
-  font-weight:bold;
   cursor:pointer;
-  box-shadow:
-    inset 0 -4px 0 rgba(0,0,0,0.1),
-    0 5px 10px rgba(255,105,180,0.35);
-  transition:all 0.15s;
+  box-shadow:0 2px 4px rgba(0,0,0,0.08);
 }
 
 .qty-btn:hover{
-  transform:translateY(-2px) scale(1.05);
+  background:#e8ddd5;
 }
 
 .qty-btn:active{
-  transform:translateY(2px) scale(0.95);
-  box-shadow:inset 0 3px 6px rgba(0,0,0,0.15);
+  transform:translateY(1px);
 }
 
-.minus10{ background:#ffcdd2; }
-.minus1{ background:#ffe0e0; }
-.zero{ background:#f3f3f3; }
-.add1{ background:#ffd6e7; }
+.minus10{ background:#f0d6d6; }
+.minus1{ background:#f5e1e1; }
+.zero{ background:#eaeaea; }
+.add1{ background:#e7d8cf; }
 
 .add10{
-  background:linear-gradient(45deg,#ff9ecb,#ff69b4,#ffc1da);
+  background:#cfa18d;
   color:white;
 }
 
 /* ===== カート ===== */
 .cart-title{
-  font-size:20px;
+  font-size:18px;
   font-weight:bold;
 }
 
@@ -195,30 +182,30 @@ body::before{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  background:#fffdfd;
-  border-radius:12px;
+  background:#fff;
+  border-radius:10px;
   padding:8px;
   margin-bottom:8px;
-  border:2px dashed #ffd6dc;
-  box-shadow:0 4px 8px rgba(255,182,193,0.2);
+  border:1px solid #e5d6cc;
 }
 
 .cart-remove{
-  background:#ffb3c1;
+  background:#d9a5a5;
   border:none;
   border-radius:50%;
   width:22px;
   height:22px;
   cursor:pointer;
+  color:white;
 }
 
 /* ===== 合計 ===== */
 .total-box{
   margin-top:15px;
   padding:10px;
-  background:linear-gradient(45deg,#ffe4ea,#ffd6dc);
-  border-radius:15px;
-  font-size:20px;
+  background:#f3ebe5;
+  border-radius:12px;
+  font-size:18px;
   font-weight:bold;
 }
 
@@ -228,17 +215,19 @@ body::before{
   padding:12px;
   margin-top:10px;
   border-radius:999px;
-  font-size:16px;
+  font-size:15px;
   font-weight:bold;
+  border:none;
 }
 
 .confirm{
-  background:linear-gradient(45deg,#ff9ecb,#ff69b4);
+  background:#b88976;
   color:white;
-  box-shadow:0 5px 12px rgba(255,105,180,0.4);
 }
 
-.reset{ background:#ffd1d1; }
+.reset{
+  background:#e6d5cc;
+}
 
 /* ===== 履歴 ===== */
 .history-box{
@@ -246,7 +235,7 @@ body::before{
   background:#fff;
   border-radius:10px;
   padding:10px;
-  border:2px solid #ffd6dc;
+  border:1px solid #e5d6cc;
 }
 
 /* ===== スマホ ===== */
@@ -275,10 +264,10 @@ body::before{
 <div id="cart">注文なし</div>
 
 <div class="total-box">
-合計: ¥<span id="total">0</span>
+合計: <span id="total">0</span>円
 </div>
 
-<button class="confirm" onclick="confirmOrder()">確定する 🐾</button>
+<button class="confirm" onclick="confirmOrder()">確定する</button>
 <button class="reset" onclick="resetCart()">リセット</button>
 
 <div class="history-box">
@@ -293,14 +282,12 @@ body::before{
 
 /* ===== メニュー ===== */
 const menuData = {
-
 Drink:[
 ["も～も～ミルクラテ",3000,"milk_latte.png"],
 ["わんプレッソラテ",3000,"wanpresso.png"],
 ["も～っとしゅわっとクリームソーダ",3000,"cream_soda.png"],
 ["ちょっぴりビターなわんコーヒーフロート",3000,"coffee_float.png"]
 ],
-
 Food:[
 ["わんわんサンド",3000,"wanwansand.png"],
 ["わんも～弁当",4000,"wanmow_bento.png"],
@@ -309,37 +296,19 @@ Food:[
 ["も～も～ハニートースト",4000,"honey_toast.png"],
 ["まんぷくハンバーグ",4000,"hamburg.png"]
 ],
-
 Dessert:[
 ["いぬぷりん（いちご味）",3000,"pudding_strawberry.png"],
 ["いぬぷりん（マンゴー味）",3000,"pudding_mango.png"]
-],
-
-Joint:[
-["ぷにっとわんくーる",3000,"wan_cool.png"],
-["ぷにっとも～くーる",3000,"mow_cool.png"]
-],
-
-Rescue:[
-["も～も～点滴いちごみるく",3000,"strawberry_milk.png"],
-["わんわんレスキューサンド",3000,"rescue_sand.png"],
-["わんわんレスキュードック",3000,"rescue_dog.png"]
-],
-
-期間限定:[
-["しゅわしゅわオレンジソーダ",5000,"orange_soda.png"],
-["わんわんキッシュ",5000,"wan_quiche.png"],
-["も～も～キッシュ",5000,"mow_quiche.png"]
-],
-
-Secret:[
-["いちご",4000,"secret_strawberry.png"]
 ]
-
 };
 
 let currentTab="Drink";
 let cart={};
+
+/* 円フォーマット */
+function yen(num){
+  return num.toLocaleString();
+}
 
 function getTotal(){
 let total=0;
@@ -349,12 +318,6 @@ if(cart[item[0]]) total+=item[1]*cart[item[0]];
 });
 });
 return total;
-}
-
-/* ぷにアニメ */
-function popEffect(){
-document.body.style.transform="scale(0.995)";
-setTimeout(()=>{document.body.style.transform="scale(1)";},80);
 }
 
 function renderAll(){
@@ -368,16 +331,9 @@ const tabbar=document.getElementById("tabbar");
 tabbar.innerHTML="";
 
 Object.keys(menuData).forEach(key=>{
-let count=0;
-
-menuData[key].forEach(item=>{
-if(cart[item[0]]) count+=cart[item[0]];
-});
-
 const tab=document.createElement("div");
 tab.className="tab"+(key===currentTab?" active":"");
 tab.innerText=key;
-
 tab.onclick=()=>{currentTab=key;renderAll();};
 tabbar.appendChild(tab);
 });
@@ -397,14 +353,14 @@ div.innerHTML=`
 ${count>0?`<div class="count-badge">×${count}</div>`:""}
 <img src="${item[2]}">
 <p>${item[0]}</p>
-<p>¥${item[1]}</p>
+<p>${yen(item[1])}円</p>
 
 <div>
 <button class="qty-btn minus10" onclick="change('${item[0]}',-10)">-10</button>
 <button class="qty-btn minus1" onclick="change('${item[0]}',-1)">-1</button>
 <button class="qty-btn zero" onclick="clearItem('${item[0]}')">0</button>
-<button class="qty-btn add1" onclick="change('${item[0]}',1)">+1 🐾</button>
-<button class="qty-btn add10" onclick="change('${item[0]}',10)">+10 🐾</button>
+<button class="qty-btn add1" onclick="change('${item[0]}',1)">+1</button>
+<button class="qty-btn add10" onclick="change('${item[0]}',10)">+10</button>
 </div>
 `;
 
@@ -415,7 +371,6 @@ menu.appendChild(div);
 function change(name,delta){
 cart[name]=(cart[name]||0)+delta;
 if(cart[name]<=0) delete cart[name];
-popEffect();
 renderAll();
 }
 
@@ -430,7 +385,7 @@ renderAll();
 }
 
 function updateUI(){
-document.getElementById("total").innerText=getTotal();
+document.getElementById("total").innerText=yen(getTotal());
 
 let html="";
 for(let item in cart){
@@ -457,7 +412,7 @@ text+=`${item} ×${cart[item]} / `;
 }
 
 document.getElementById("history").innerHTML =
-`<div>¥${getTotal()} | ${text}</div>` +
+`<div>${yen(getTotal())}円 | ${text}</div>` +
 document.getElementById("history").innerHTML;
 
 resetCart();
