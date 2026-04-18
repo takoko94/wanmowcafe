@@ -16,7 +16,7 @@
 body{
   margin:0;
   font-family:'Yasashisa', sans-serif;
-  background:#fffaf5; /* ←カフェ寄せ */
+  background:#fffaf5; /* カフェ寄せ */
   user-select:none;
   padding:10px;
   letter-spacing:0.5px;
@@ -34,7 +34,7 @@ body{
 
 .sidebar{
   width:25%;
-  background:#fffdfb; /* ←カフェ寄せ */
+  background:#fffdfb;
   border-left:3px solid #e5d6cc;
   position:sticky;
   top:0;
@@ -54,7 +54,7 @@ body{
 /* タブ */
 .tabbar{
   display:flex;
-  justify-content:center; /* ←中央寄せ */
+  justify-content:center; /* 中央 */
   overflow-x:auto;
   background:#f3ebe5;
   padding:10px;
@@ -66,7 +66,7 @@ body{
   background:white;
   border-radius:10px;
   cursor:pointer;
-  position:relative; /* ←バッジ用 */
+  position:relative;
   font-weight:bold;
 }
 
@@ -145,11 +145,22 @@ body{
 }
 
 .qty-btn{
-  padding:5px 8px;
+  padding:9px 12px; /* ←サイズ戻し */
   border:none;
   border-radius:999px;
-  font-size:12px;
+  font-size:13px;
   cursor:pointer;
+  box-shadow:0 4px 0 rgba(0,0,0,0.12);
+  transition:all 0.12s ease;
+}
+
+.qty-btn:hover{
+  transform:translateY(-2px);
+}
+
+.qty-btn:active{
+  transform:translateY(2px);
+  box-shadow:0 1px 0 rgba(0,0,0,0.15);
 }
 
 .minus10{ background:#f0d6d6; }
@@ -265,7 +276,7 @@ body{
 
 <script>
 
-/* 🔥 メニュー（完全そのまま） */
+/* 🔥 元のメニュー完全維持 */
 const menuData = {
 
 Drink:[
