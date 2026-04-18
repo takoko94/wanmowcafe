@@ -22,6 +22,7 @@ body{
 }
 
 .main{ width:75%; }
+
 .sidebar{
   width:25%;
   background:#fffafc;
@@ -47,8 +48,6 @@ body{
   overflow-x:auto;
   background:#ffe4ea;
   padding:10px;
-  position:sticky;
-  top:0;
 }
 
 .tab{
@@ -199,25 +198,12 @@ body{
   border:2px solid #ffd6dc;
 }
 
-/* スマホ対応 */
+/* スマホ */
 @media (max-width:800px){
-  .container{
-    flex-direction:column;
-    max-width:100%;
-  }
-
-  .main,.sidebar{
-    width:100%;
-  }
-
-  .sidebar{
-    position:static;
-    height:auto;
-  }
-
-  .item{
-    width:45%;
-  }
+  .container{ flex-direction:column; }
+  .main,.sidebar{ width:100%; }
+  .sidebar{ position:static; height:auto; }
+  .item{ width:45%; }
 }
 </style>
 </head>
@@ -229,7 +215,7 @@ body{
 <div class="main">
 <img src="logo.png" class="logo">
 <div class="tabbar" id="tabbar"></div>
-<div id="menu"></div>
+<div id="menu" class="menu"></div>
 </div>
 
 <div class="sidebar">
@@ -253,24 +239,63 @@ body{
 
 <script>
 
+/* 🔥 ここだけ触ればOK */
 const menuData = {
 Drink:[
 ["も～も～ミルクラテ",3000,"milk_latte.png"],
-["わんプレッソラテ",3000,"wanpresso.png"]
+["わんプレッソラテ",3000,"wanpresso.png"],
+["も～っとしゅわっとクリームソーダ",3000,"cream_soda.png"],
+["ちょっぴりビターなわんコーヒーフロート",3000,"coffee_float.png"]
 ],
 Food:[
+["わんわんサンド",3000,"wanwansand.png"],
 ["わんも～弁当",4000,"wanmow_bento.png"],
-["わんも～プレート",6000,"wanmow_plate.png"]
+["わんも～プレート",6000,"wanmow_plate.png"],
+["ぎゅっとぽかぽかクリームシチュー",3000,"mowmow_stew.png"],
+["も～も～ハニートースト",4000,"honey_toast.png"],
+["まんぷくハンバーグ",4000,"hamburg.png"]
+],
+Dessert:[
+["いぬぷりん（いちご味）",3000,"pudding_strawberry.png"],
+["いぬぷりん（マンゴー味）",3000,"pudding_mango.png"]
+],
+Joint:[
+["ぷにっとわんくーる",3000,"wan_cool.png"],
+["ぷにっとも～くーる",3000,"mow_cool.png"]
 ],
 Rescue:[
-["も～も～点滴いちごみるく",3000,"strawberry_milk.png"]
+["も～も～点滴いちごみるく",3000,"strawberry_milk.png"],
+["わんわんレスキューサンド",3000,"rescue_sand.png"],
+["わんわんレスキュードック",3000,"rescue_dog.png"]
+],
+期間限定:[
+["しゅわしゅわオレンジソーダ",5000,"orange_soda.png"],
+["わんわんキッシュ",5000,"wan_quiche.png"],
+["も～も～キッシュ",5000,"mow_quiche.png"]
+],
+Secret:[
+["いちご",4000,"secret_strawberry.png"]
 ]
 };
 
 let currentTab="Drink";
-let total=0;
 let cart={};
-let historyList=[];
+
+function getTotal(){
+let total=0;
+Object.values(menuData).forEach(list=>{
+list.forEach(item=>{
+if(cart[item[0]]) total+=item[1]*cart[item[0]];
+});
+});
+return total;
+}
+
+function renderAll(){
+renderTabs();
+renderMenu();
+updateUI();
+}
 
 function renderTabs(){
 const tabbar=document.getElementById("tabbar");
@@ -293,11 +318,7 @@ badge.innerText=count;
 tab.appendChild(badge);
 }
 
-tab.onclick=()=>{
-currentTab=key;
-renderAll();
-};
-
+tab.onclick=()=>{ currentTab=key; renderAll(); };
 tabbar.appendChild(tab);
 });
 }
@@ -319,11 +340,11 @@ ${count>0?`<div class="count-badge">×${count}</div>`:""}
 <p>¥${item[1]}</p>
 
 <div>
-<button class="qty-btn minus10" onclick="removeItem('${item[0]}',${item[1]},10)">-10</button>
-<button class="qty-btn minus1" onclick="removeItem('${item[0]}',${item[1]},1)">-1</button>
+<button class="qty-btn minus10" onclick="change('${item[0]}',-10)">-10</button>
+<button class="qty-btn minus1" onclick="change('${item[0]}',-1)">-1</button>
 <button class="qty-btn zero" onclick="clearItem('${item[0]}')">0</button>
-<button class="qty-btn add1" onclick="addItem('${item[0]}',${item[1]},1)">+1</button>
-<button class="qty-btn add10" onclick="addItem('${item[0]}',${item[1]},10)">+10</button>
+<button class="qty-btn add1" onclick="change('${item[0]}',1)">+1</button>
+<button class="qty-btn add10" onclick="change('${item[0]}',10)">+10</button>
 </div>
 `;
 
@@ -331,8 +352,24 @@ menu.appendChild(div);
 });
 }
 
+function change(name,delta){
+cart[name]=(cart[name]||0)+delta;
+if(cart[name]<=0) delete cart[name];
+renderAll();
+}
+
+function clearItem(name){
+delete cart[name];
+renderAll();
+}
+
+function removeFromCart(name){
+delete cart[name];
+renderAll();
+}
+
 function updateUI(){
-document.getElementById("total").innerText=total;
+document.getElementById("total").innerText=getTotal();
 
 let html="";
 for(let item in cart){
@@ -342,48 +379,11 @@ ${item} ×${cart[item]}
 <button class="cart-remove" onclick="removeFromCart('${item}')">×</button>
 </div>`;
 }
-
 document.getElementById("cart").innerHTML=html||"注文なし";
-}
-
-function addItem(name,price,qty){
-total+=price*qty;
-cart[name]=(cart[name]||0)+qty;
-renderAll();
-}
-
-function removeItem(name,price,qty){
-if(!cart[name]) return;
-cart[name]-=qty;
-total-=price*qty;
-if(cart[name]<=0) delete cart[name];
-renderAll();
-}
-
-function clearItem(name){
-delete cart[name];
-recalculateTotal();
-renderAll();
-}
-
-function removeFromCart(name){
-delete cart[name];
-recalculateTotal();
-renderAll();
-}
-
-function recalculateTotal(){
-total=0;
-for(let key in menuData){
-menuData[key].forEach(item=>{
-if(cart[item[0]]) total+=item[1]*cart[item[0]];
-});
-}
 }
 
 function resetCart(){
 cart={};
-total=0;
 renderAll();
 }
 
@@ -395,17 +395,11 @@ for(let item in cart){
 text+=`${item} ×${cart[item]} / `;
 }
 
-historyList.unshift(`¥${total} | ${text}`);
-document.getElementById("history").innerHTML=
-historyList.map(h=>`<div>${h}</div>`).join("");
+document.getElementById("history").innerHTML =
+`<div>¥${getTotal()} | ${text}</div>` +
+document.getElementById("history").innerHTML;
 
 resetCart();
-}
-
-function renderAll(){
-renderTabs();
-renderMenu();
-updateUI();
 }
 
 renderAll();
