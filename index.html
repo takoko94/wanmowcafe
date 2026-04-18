@@ -11,7 +11,6 @@ body {
   background: #fff7f5;
 }
 
-/* レイアウト */
 .container {
   display: flex;
 }
@@ -21,7 +20,7 @@ body {
   width: 70%;
 }
 
-/* 右カート */
+/* 右 */
 .sidebar {
   width: 30%;
   background: #fffafc;
@@ -86,25 +85,27 @@ body {
 }
 
 /* ボタン */
-button {
-  margin: 2px;
-  padding: 5px 8px;
+.qty-btn {
+  margin: 3px;
+  padding: 6px 10px;
   border: none;
-  border-radius: 8px;
+  border-radius: 999px;
+  font-size: 13px;
   cursor: pointer;
-  transition: transform 0.1s;
+  transition: all 0.15s;
 }
 
-button:active {
-  transform: scale(0.9);
+.minus10 { background: #ffcdd2; }
+.minus1  { background: #ffe0e0; }
+.zero    { background: #eee; }
+.add1    { background: #ffd6e7; }
+.add10   { background: linear-gradient(45deg, pink, hotpink); color: white; }
+
+.qty-btn:active {
+  transform: scale(0.85);
 }
 
-.add1 { background: pink; }
-.add10 { background: hotpink; color: white; }
-.minus1 { background: #ddd; }
-.minus10 { background: #aaa; color: white; }
-
-/* カートUI */
+/* カート */
 .cart-title {
   font-size: 20px;
   font-weight: bold;
@@ -118,7 +119,6 @@ button:active {
   border: 2px dashed #ffd6dc;
 }
 
-/* 合計 */
 .total-box {
   margin-top: 15px;
   padding: 10px;
@@ -153,7 +153,7 @@ button:active {
   border: 2px solid #ffd6dc;
 }
 
-/* ポンアニメ */
+/* ポン */
 @keyframes pop {
   0% { transform: scale(1); }
   50% { transform: scale(1.2); }
@@ -170,7 +170,6 @@ button:active {
 
 <div class="container">
 
-<!-- 左 -->
 <div class="main">
 
 <img src="logo.png" class="logo">
@@ -181,17 +180,16 @@ button:active {
 
 </div>
 
-<!-- 右 -->
 <div class="sidebar">
 
-<div class="cart-title">🐶 ご注文</div>
+<div class="cart-title">🐶🐮 注文内容</div>
 <div id="cart">注文なし</div>
 
 <div class="total-box">
 合計: ¥<span id="total">0</span>
 </div>
 
-<button class="confirm" onclick="confirmOrder()">注文する</button>
+<button class="confirm" onclick="confirmOrder()">✨ 確定する</button>
 <button class="reset" onclick="resetCart()">リセット</button>
 
 <div class="history-box">
@@ -205,41 +203,49 @@ button:active {
 
 <script>
 const menuData = {
-  "Drink": [
-    ["も～も～ミルクラテ",3000,"milk_latte.png"],
-    ["わんプレッソラテ",3000,"wanpresso.png"],
-    ["も～っとしゅわっとクリームソーダ",3000,"cream_soda.png"],
-    ["ちょっぴりビターなわんコーヒーフロート",3000,"coffee_float.png"]
-  ],
-  "Food": [
-    ["わんわんサンド",3000,"wanwansand.png"],
-    ["わんも～弁当",4000,"wanmow_bento.png"],
-    ["わんも～プレート",6000,"wanmow_plate.png"],
-    ["ぎゅっとぽかぽかクリームシチュー",3000,"mowmow_stew.png"],
-    ["も～も～ハニートースト",4000,"honey_toast.png"],
-    ["まんぷくハンバーグ",4000,"hamburg.png"]
-  ],
-  "Dessert": [
-    ["いぬぷりん（いちご味）",3000,"pudding_strawberry.png"],
-    ["いぬぷりん（マンゴー味）",3000,"pudding_mango.png"]
-  ],
-  "Joint": [
-    ["ぷにっとわんくーる",3000,"wan_cool.png"],
-    ["ぷにっとも～くーる",3000,"mow_cool.png"]
-  ],
-  "Rescue": [
-    ["も～も～点滴いちごみるく",3000,"strawberry_milk.png"],
-    ["わんわんレスキューサンド",3000,"rescue_sand.png"],
-    ["わんわんレスキュードック",3000,"rescue_dog.png"]
-  ],
-  "期間限定": [
-    ["しゅわしゅわオレンジソーダ",5000,"orange_soda.png"],
-    ["わんわんキッシュ",5000,"wan_quiche.png"],
-    ["も～も～キッシュ",5000,"mow_quiche.png"]
-  ],
-  "Secret": [
-    ["いちご",4000,"secret_strawberry.png"]
-  ]
+
+"Drink": [
+["も～も～ミルクラテ",3000,"milk_latte.png"],
+["わんプレッソラテ",3000,"wanpresso.png"],
+["も～っとしゅわっとクリームソーダ",3000,"cream_soda.png"],
+["ちょっぴりビターなわんコーヒーフロート",3000,"coffee_float.png"]
+],
+
+"Food": [
+["わんわんサンド",3000,"wanwansand.png"],
+["わんも～弁当",4000,"wanmow_bento.png"],
+["わんも～プレート",6000,"wanmow_plate.png"],
+["ぎゅっとぽかぽかクリームシチュー",3000,"mowmow_stew.png"],
+["も～も～ハニートースト",4000,"honey_toast.png"],
+["まんぷくハンバーグ",4000,"hamburg.png"]
+],
+
+"Dessert": [
+["いぬぷりん（いちご味）",3000,"pudding_strawberry.png"],
+["いぬぷりん（マンゴー味）",3000,"pudding_mango.png"]
+],
+
+"Joint": [
+["ぷにっとわんくーる",3000,"wan_cool.png"],
+["ぷにっとも～くーる",3000,"mow_cool.png"]
+],
+
+"Rescue": [
+["も～も～点滴いちごみるく",3000,"strawberry_milk.png"],
+["わんわんレスキューサンド",3000,"rescue_sand.png"],
+["わんわんレスキュードック",3000,"rescue_dog.png"]
+],
+
+"期間限定": [
+["しゅわしゅわオレンジソーダ",5000,"orange_soda.png"],
+["わんわんキッシュ",5000,"wan_quiche.png"],
+["も～も～キッシュ",5000,"mow_quiche.png"]
+],
+
+"Secret": [
+["いちご",4000,"secret_strawberry.png"]
+]
+
 };
 
 let currentTab = "Drink";
@@ -249,114 +255,120 @@ let historyList = [];
 
 /* タブ */
 function renderTabs() {
-  const tabbar = document.getElementById("tabbar");
-  tabbar.innerHTML = "";
+const tabbar = document.getElementById("tabbar");
+tabbar.innerHTML = "";
 
-  for (let key in menuData) {
-    const div = document.createElement("div");
-    div.className = "tab" + (key === currentTab ? " active" : "");
-    div.innerText = key;
+for (let key in menuData) {
+const div = document.createElement("div");
+div.className = "tab" + (key === currentTab ? " active" : "");
+div.innerText = key;
 
-    div.onclick = () => {
-      currentTab = key;
-      renderTabs();
-      renderMenu();
-    };
+div.onclick = () => {
+currentTab = key;
+renderTabs();
+renderMenu();
+};
 
-    tabbar.appendChild(div);
-  }
+tabbar.appendChild(div);
+}
 }
 
 /* メニュー */
 function renderMenu() {
-  const menu = document.getElementById("menu");
-  menu.innerHTML = "";
-  menu.className = "menu";
+const menu = document.getElementById("menu");
+menu.innerHTML = "";
+menu.className = "menu";
 
-  menuData[currentTab].forEach(item => {
-    const div = document.createElement("div");
-    div.className = "item";
+menuData[currentTab].forEach(item => {
+const div = document.createElement("div");
+div.className = "item";
 
-    div.innerHTML = `
-      <img src="${item[2]}">
-      <p>${item[0]}</p>
-      <p>¥${item[1]}</p>
+div.innerHTML = `
+<img src="${item[2]}">
+<p>${item[0]}</p>
+<p>¥${item[1]}</p>
 
-      <button onclick="removeItem('${item[0]}', ${item[1]}, 10)">-10</button>
-      <button onclick="removeItem('${item[0]}', ${item[1]}, 1)">-1</button>
-      <button onclick="addItem('${item[0]}', ${item[1]}, 1)">+1</button>
-      <button onclick="addItem('${item[0]}', ${item[1]}, 10)">+10</button>
-    `;
+<button class="qty-btn minus10" onclick="removeItem('${item[0]}', ${item[1]}, 10)">-10</button>
+<button class="qty-btn minus1" onclick="removeItem('${item[0]}', ${item[1]}, 1)">-1</button>
+<button class="qty-btn zero" onclick="clearItem('${item[0]}')">0</button>
+<button class="qty-btn add1" onclick="addItem('${item[0]}', ${item[1]}, 1)">+1</button>
+<button class="qty-btn add10" onclick="addItem('${item[0]}', ${item[1]}, 10)">+10</button>
+`;
 
-    menu.appendChild(div);
-  });
+menu.appendChild(div);
+});
 }
 
-/* ポン演出 */
+/* ポン */
 function popEffect() {
-  const totalEl = document.querySelector(".total-box");
-  totalEl.classList.remove("pop");
-  void totalEl.offsetWidth;
-  totalEl.classList.add("pop");
+const el = document.querySelector(".total-box");
+el.classList.remove("pop");
+void el.offsetWidth;
+el.classList.add("pop");
 }
 
-/* 加算 */
+/* 追加 */
 function addItem(name, price, qty) {
-  total += price * qty;
-  cart[name] = (cart[name] || 0) + qty;
-  updateUI();
-  popEffect();
+total += price * qty;
+cart[name] = (cart[name] || 0) + qty;
+updateUI();
+popEffect();
 }
 
 /* 減算 */
 function removeItem(name, price, qty) {
-  if (!cart[name]) return;
-  cart[name] -= qty;
-  total -= price * qty;
+if (!cart[name]) return;
+cart[name] -= qty;
+total -= price * qty;
 
-  if (cart[name] <= 0) delete cart[name];
-  if (total < 0) total = 0;
+if (cart[name] <= 0) delete cart[name];
+if (total < 0) total = 0;
 
-  updateUI();
-  popEffect();
+updateUI();
+popEffect();
 }
 
-/* UI更新 */
+/* 0 */
+function clearItem(name) {
+delete cart[name];
+updateUI();
+}
+
+/* UI */
 function updateUI() {
-  document.getElementById("total").innerText = total;
+document.getElementById("total").innerText = total;
 
-  let text = "";
-  for (let item in cart) {
-    text += `<div class="cart-item">🐾 ${item} ×${cart[item]}</div>`;
-  }
+let text = "";
+for (let item in cart) {
+text += `<div class="cart-item">🐾 ${item} ×${cart[item]}</div>`;
+}
 
-  document.getElementById("cart").innerHTML = text || "注文なし";
+document.getElementById("cart").innerHTML = text || "注文なし";
 }
 
 /* リセット */
 function resetCart() {
-  total = 0;
-  cart = {};
-  updateUI();
+total = 0;
+cart = {};
+updateUI();
 }
 
 /* 確定 */
 function confirmOrder() {
-  if (Object.keys(cart).length === 0) return;
+if (Object.keys(cart).length === 0) return;
 
-  let text = "";
-  for (let item in cart) {
-    text += `${item} ×${cart[item]} / `;
-  }
-
-  historyList.unshift(`¥${total} | ${text}`);
-  document.getElementById("history").innerHTML =
-    historyList.map(h => `<div>${h}</div>`).join("");
-
-  resetCart();
+let text = "";
+for (let item in cart) {
+text += `${item} ×${cart[item]} / `;
 }
 
-/* 初期 */
+historyList.unshift(`¥${total} | ${text}`);
+document.getElementById("history").innerHTML =
+historyList.map(h => `<div>${h}</div>`).join("");
+
+resetCart();
+}
+
 renderTabs();
 renderMenu();
 </script>
