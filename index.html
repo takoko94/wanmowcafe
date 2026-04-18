@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
-<title>わんも～Cafe | wanmowcafe</title>
-
 <style>
 
-/* 🔥 フォント読み込み（そのまま） */
+/* 🔥 フォント */
 @font-face {
   font-family: 'Yasashisa';
   src: url('YasashisaGothicBold-V2.otf') format('opentype');
@@ -18,13 +12,11 @@ body{
   background:#fff7f5;
   user-select:none;
   padding:10px;
-  letter-spacing:0.5px;
 }
 
-/* 中央寄せ */
+/* レイアウト */
 .container{
   display:flex;
-  justify-content:center;
   max-width:1200px;
   margin:0 auto;
 }
@@ -47,7 +39,6 @@ body{
   width:260px;
   display:block;
   margin:10px auto;
-  pointer-events:none;
 }
 
 /* タブ */
@@ -65,7 +56,6 @@ body{
   background:white;
   border-radius:10px;
   cursor:pointer;
-  position:relative;
   font-weight:bold;
 }
 
@@ -74,24 +64,12 @@ body{
   color:white;
 }
 
-.tab-badge{
-  position:absolute;
-  top:-5px;
-  right:-5px;
-  background:hotpink;
-  color:white;
-  font-size:11px;
-  padding:3px 6px;
-  border-radius:999px;
-}
-
 /* メニュー */
 .menu{
   display:flex;
   flex-wrap:wrap;
   justify-content:center;
   gap:15px;
-  padding:10px;
 }
 
 .item{
@@ -100,24 +78,10 @@ body{
   border-radius:15px;
   padding:12px;
   border:2px solid #ffd6dc;
-  position:relative;
 }
 
 .item img{
   width:100%;
-  border-radius:10px;
-  pointer-events:none;
-}
-
-.count-badge{
-  position:absolute;
-  top:8px;
-  right:8px;
-  background:hotpink;
-  color:white;
-  border-radius:999px;
-  padding:4px 8px;
-  font-size:12px;
 }
 
 /* ボタン */
@@ -125,124 +89,59 @@ body{
   display:flex;
   justify-content:center;
   gap:4px;
-  margin-top:6px;
 }
 
 .qty-btn{
-  padding:5px 8px;
+  padding:6px 8px;
   border:none;
   border-radius:999px;
   font-size:12px;
-  cursor:pointer;
 }
 
-.minus10{ background:#ffcdd2; }
-.minus1{ background:#ffe0e0; }
-.zero{ background:#eee; }
-.add1{ background:#ffd6e7; }
-.add10{
-  background:linear-gradient(45deg,pink,hotpink);
-  color:white;
-}
-
-/* カート */
-.cart-title{
-  font-size:20px;
-  font-weight:bold;
-}
-
-.cart-item{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  background:#fff;
-  border-radius:10px;
-  padding:8px;
-  margin-bottom:8px;
-  border:2px dashed #ffd6dc;
-}
-
-.cart-remove{
-  background:#ffb3c1;
-  border:none;
-  border-radius:50%;
-  width:22px;
-  height:22px;
-  cursor:pointer;
-}
-
-/* 合計 */
-.total-box{
-  margin-top:15px;
-  padding:10px;
-  background:#ffe4ea;
-  border-radius:10px;
-  font-size:20px;
-  font-weight:bold;
-}
-
-/* ボタン */
-.confirm,.reset{
-  width:100%;
-  padding:12px;
-  margin-top:10px;
-  border-radius:999px;
-  font-size:16px;
-  font-weight:bold;
-}
-
-.confirm{
-  background:linear-gradient(45deg,#ff9ecb,#ff69b4);
-  color:white;
-}
-
-.reset{ background:#ffd1d1; }
-
-/* 履歴 */
-.history-box{
-  margin-top:20px;
-  background:#fff;
-  border-radius:10px;
-  padding:10px;
-  border:2px solid #ffd6dc;
-}
-
-/* =========================
-   🔥 スマホだけ改善（最小限）
-   ========================= */
+/* ===== 🔥 スマホ完全修正 ===== */
 @media (max-width:800px){
 
+  /* 縦並び */
   .container{
     flex-direction:column;
   }
 
   .main{
     width:100%;
-    padding-bottom:160px; /* 下バー分 */
+    padding-bottom:180px; /* ←ここ重要 */
   }
 
+  /* 👇 下固定バー */
   .sidebar{
-    position:fixed;
+    position:fixed !important;
     bottom:0;
     left:0;
     width:100%;
-    height:auto;
+    height:160px; /* ←高さ固定 */
+    overflow-y:auto;
     border-left:none;
     border-radius:20px 20px 0 0;
-    z-index:999;
+    background:#fffafc;
+    z-index:9999;
   }
 
+  /* 👇 カード2列 */
   .item{
-    width:48%;
+    width:48% !important;
   }
 
-  /* 👇 ボタンだけ大きく（フォントは変えない） */
+  /* 👇 ボタン確実に大きく */
   .qty-btn{
-    padding:14px 10px;
-    font-size:12px;
-    min-width:44px;
+    padding:16px !important;
+    font-size:16px !important;
+    min-width:48px !important;
   }
 
+  .item div{
+    gap:8px;
+  }
+
+  /* タブ左寄せ */
   .tabbar{
     justify-content:flex-start;
   }
@@ -250,217 +149,3 @@ body{
 }
 
 </style>
-</head>
-
-<body>
-
-<!-- ↓↓↓ ここから完全に元コードそのまま ↓↓↓ -->
-
-<div class="container">
-
-<div class="main">
-<img src="logo.png" class="logo">
-<div class="tabbar" id="tabbar"></div>
-<div id="menu" class="menu"></div>
-</div>
-
-<div class="sidebar">
-<div class="cart-title">注文内容</div>
-<div id="cart">注文なし</div>
-
-<div class="total-box">
-合計: ¥<span id="total">0</span>
-</div>
-
-<button class="confirm" onclick="confirmOrder()">確定する</button>
-<button class="reset" onclick="resetCart()">リセット</button>
-
-<div class="history-box">
-<h3>履歴</h3>
-<div id="history">なし</div>
-</div>
-</div>
-
-</div>
-
-<script>
-
-/* 🔥 JSは完全そのまま */
-
-const menuData = {
-
-Drink:[
-["も～も～ミルクラテ",3000,"milk_latte.png"],
-["わんプレッソラテ",3000,"wanpresso.png"],
-["も～っとしゅわっとクリームソーダ",3000,"cream_soda.png"],
-["ちょっぴりビターなわんコーヒーフロート",3000,"coffee_float.png"]
-],
-
-Food:[
-["わんわんサンド",3000,"wanwansand.png"],
-["わんも～弁当",4000,"wanmow_bento.png"],
-["わんも～プレート",6000,"wanmow_plate.png"],
-["ぎゅっとぽかぽかクリームシチュー",3000,"mowmow_stew.png"],
-["も～も～ハニートースト",4000,"honey_toast.png"],
-["まんぷくハンバーグ",4000,"hamburg.png"]
-],
-
-Dessert:[
-["いぬぷりん（いちご味）",3000,"pudding_strawberry.png"],
-["いぬぷりん（マンゴー味）",3000,"pudding_mango.png"]
-],
-
-Joint:[
-["ぷにっとわんくーる",3000,"wan_cool.png"],
-["ぷにっとも～くーる",3000,"mow_cool.png"]
-],
-
-Rescue:[
-["も～も～点滴いちごみるく",3000,"strawberry_milk.png"],
-["わんわんレスキューサンド",3000,"rescue_sand.png"],
-["わんわんレスキュードック",3000,"rescue_dog.png"]
-],
-
-期間限定:[
-["しゅわしゅわオレンジソーダ",5000,"orange_soda.png"],
-["わんわんキッシュ",5000,"wan_quiche.png"],
-["も～も～キッシュ",5000,"mow_quiche.png"]
-],
-
-Secret:[
-["いちご",4000,"secret_strawberry.png"]
-]
-
-};
-
-let currentTab="Drink";
-let cart={};
-
-function getTotal(){
-let total=0;
-Object.values(menuData).forEach(list=>{
-list.forEach(item=>{
-if(cart[item[0]]) total+=item[1]*cart[item[0]];
-});
-});
-return total;
-}
-
-function renderAll(){
-renderTabs();
-renderMenu();
-updateUI();
-}
-
-function renderTabs(){
-const tabbar=document.getElementById("tabbar");
-tabbar.innerHTML="";
-
-Object.keys(menuData).forEach(key=>{
-let count=0;
-
-menuData[key].forEach(item=>{
-if(cart[item[0]]) count+=cart[item[0]];
-});
-
-const tab=document.createElement("div");
-tab.className="tab"+(key===currentTab?" active":"");
-tab.innerText=key;
-
-if(count>0){
-const badge=document.createElement("div");
-badge.className="tab-badge";
-badge.innerText=count;
-tab.appendChild(badge);
-}
-
-tab.onclick=()=>{currentTab=key;renderAll();};
-tabbar.appendChild(tab);
-});
-}
-
-function renderMenu(){
-const menu=document.getElementById("menu");
-menu.innerHTML="";
-
-menuData[currentTab].forEach(item=>{
-const count=cart[item[0]]||0;
-
-const div=document.createElement("div");
-div.className="item";
-
-div.innerHTML=`
-${count>0?`<div class="count-badge">×${count}</div>`:""}
-<img src="${item[2]}" draggable="false">
-<p>${item[0]}</p>
-<p>¥${item[1]}</p>
-
-<div>
-<button class="qty-btn minus10" onclick="change('${item[0]}',-10)">-10</button>
-<button class="qty-btn minus1" onclick="change('${item[0]}',-1)">-1</button>
-<button class="qty-btn zero" onclick="clearItem('${item[0]}')">0</button>
-<button class="qty-btn add1" onclick="change('${item[0]}',1)">+1</button>
-<button class="qty-btn add10" onclick="change('${item[0]}',10)">+10</button>
-</div>
-`;
-
-menu.appendChild(div);
-});
-}
-
-function change(name,delta){
-cart[name]=(cart[name]||0)+delta;
-if(cart[name]<=0) delete cart[name];
-renderAll();
-}
-
-function clearItem(name){
-delete cart[name];
-renderAll();
-}
-
-function removeFromCart(name){
-delete cart[name];
-renderAll();
-}
-
-function updateUI(){
-document.getElementById("total").innerText=getTotal();
-
-let html="";
-for(let item in cart){
-html+=`
-<div class="cart-item">
-${item} ×${cart[item]}
-<button class="cart-remove" onclick="removeFromCart('${item}')">×</button>
-</div>`;
-}
-document.getElementById("cart").innerHTML=html||"注文なし";
-}
-
-function resetCart(){
-cart={};
-renderAll();
-}
-
-function confirmOrder(){
-if(Object.keys(cart).length===0) return;
-
-let text="";
-for(let item in cart){
-text+=`${item} ×${cart[item]} / `;
-}
-
-document.getElementById("history").innerHTML =
-`<div>¥${getTotal()} | ${text}</div>` +
-document.getElementById("history").innerHTML;
-
-resetCart();
-}
-
-renderAll();
-
-</script>
-
-</body>
-</html>
