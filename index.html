@@ -16,21 +16,21 @@ body {
   display: flex;
 }
 
-/* 左（メニュー） */
+/* 左 */
 .main {
   width: 70%;
 }
 
-/* 右（カート） */
+/* 右カート */
 .sidebar {
   width: 30%;
-  background: #fff;
-  border-left: 3px solid #ffd6dc;
+  background: #fffafc;
+  border-left: 4px solid #ffc0cb;
   position: sticky;
   top: 0;
   height: 100vh;
   overflow-y: auto;
-  padding: 15px;
+  padding: 20px;
 }
 
 /* ロゴ */
@@ -56,7 +56,6 @@ body {
   background: white;
   border-radius: 10px;
   cursor: pointer;
-  white-space: nowrap;
 }
 
 .tab.active {
@@ -93,6 +92,11 @@ button {
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  transition: transform 0.1s;
+}
+
+button:active {
+  transform: scale(0.9);
 }
 
 .add1 { background: pink; }
@@ -100,10 +104,64 @@ button {
 .minus1 { background: #ddd; }
 .minus10 { background: #aaa; color: white; }
 
-/* カート */
-.total {
+/* カートUI */
+.cart-title {
   font-size: 20px;
+  font-weight: bold;
+}
+
+.cart-item {
+  background: #fff;
+  border-radius: 10px;
+  padding: 8px;
+  margin-bottom: 8px;
+  border: 2px dashed #ffd6dc;
+}
+
+/* 合計 */
+.total-box {
+  margin-top: 15px;
+  padding: 10px;
+  background: #ffe4ea;
+  border-radius: 10px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* ボタン */
+.confirm {
+  background: #ff69b4;
+  color: white;
+  width: 100%;
+  padding: 10px;
   margin-top: 10px;
+}
+
+.reset {
+  background: #ff9999;
+  color: white;
+  width: 100%;
+  padding: 10px;
+}
+
+/* 履歴 */
+.history-box {
+  margin-top: 20px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  border: 2px solid #ffd6dc;
+}
+
+/* ポンアニメ */
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.pop {
+  animation: pop 0.2s ease;
 }
 </style>
 </head>
@@ -112,47 +170,47 @@ button {
 
 <div class="container">
 
-  <!-- 左 -->
-  <div class="main">
+<!-- 左 -->
+<div class="main">
 
-    <img src="logo.png" class="logo">
+<img src="logo.png" class="logo">
 
-    <div class="tabbar" id="tabbar"></div>
+<div class="tabbar" id="tabbar"></div>
 
-    <div id="menu"></div>
+<div id="menu"></div>
 
-  </div>
+</div>
 
-  <!-- 右 -->
-  <div class="sidebar">
+<!-- 右 -->
+<div class="sidebar">
 
-    <h3>🧾 注文内容</h3>
-    <div id="cart">注文なし</div>
+<div class="cart-title">🐶 ご注文</div>
+<div id="cart">注文なし</div>
 
-    <div class="total">
-      合計: ¥<span id="total">0</span>
-    </div>
+<div class="total-box">
+合計: ¥<span id="total">0</span>
+</div>
 
-    <button onclick="confirmOrder()">注文確定</button>
-    <button onclick="resetCart()">リセット</button>
+<button class="confirm" onclick="confirmOrder()">注文する</button>
+<button class="reset" onclick="resetCart()">リセット</button>
 
-    <h3>履歴</h3>
-    <div id="history">なし</div>
+<div class="history-box">
+<h3>📜 履歴</h3>
+<div id="history">なし</div>
+</div>
 
-  </div>
+</div>
 
 </div>
 
 <script>
 const menuData = {
-
   "Drink": [
     ["も～も～ミルクラテ",3000,"milk_latte.png"],
     ["わんプレッソラテ",3000,"wanpresso.png"],
     ["も～っとしゅわっとクリームソーダ",3000,"cream_soda.png"],
     ["ちょっぴりビターなわんコーヒーフロート",3000,"coffee_float.png"]
   ],
-
   "Food": [
     ["わんわんサンド",3000,"wanwansand.png"],
     ["わんも～弁当",4000,"wanmow_bento.png"],
@@ -161,33 +219,27 @@ const menuData = {
     ["も～も～ハニートースト",4000,"honey_toast.png"],
     ["まんぷくハンバーグ",4000,"hamburg.png"]
   ],
-
   "Dessert": [
     ["いぬぷりん（いちご味）",3000,"pudding_strawberry.png"],
     ["いぬぷりん（マンゴー味）",3000,"pudding_mango.png"]
   ],
-
   "Joint": [
     ["ぷにっとわんくーる",3000,"wan_cool.png"],
     ["ぷにっとも～くーる",3000,"mow_cool.png"]
   ],
-
   "Rescue": [
     ["も～も～点滴いちごみるく",3000,"strawberry_milk.png"],
     ["わんわんレスキューサンド",3000,"rescue_sand.png"],
     ["わんわんレスキュードック",3000,"rescue_dog.png"]
   ],
-
   "期間限定": [
     ["しゅわしゅわオレンジソーダ",5000,"orange_soda.png"],
     ["わんわんキッシュ",5000,"wan_quiche.png"],
     ["も～も～キッシュ",5000,"mow_quiche.png"]
   ],
-
   "Secret": [
     ["いちご",4000,"secret_strawberry.png"]
   ]
-
 };
 
 let currentTab = "Drink";
@@ -240,11 +292,20 @@ function renderMenu() {
   });
 }
 
+/* ポン演出 */
+function popEffect() {
+  const totalEl = document.querySelector(".total-box");
+  totalEl.classList.remove("pop");
+  void totalEl.offsetWidth;
+  totalEl.classList.add("pop");
+}
+
 /* 加算 */
 function addItem(name, price, qty) {
   total += price * qty;
   cart[name] = (cart[name] || 0) + qty;
   updateUI();
+  popEffect();
 }
 
 /* 減算 */
@@ -257,15 +318,16 @@ function removeItem(name, price, qty) {
   if (total < 0) total = 0;
 
   updateUI();
+  popEffect();
 }
 
-/* 更新 */
+/* UI更新 */
 function updateUI() {
   document.getElementById("total").innerText = total;
 
   let text = "";
   for (let item in cart) {
-    text += `${item} ×${cart[item]}<br>`;
+    text += `<div class="cart-item">🐾 ${item} ×${cart[item]}</div>`;
   }
 
   document.getElementById("cart").innerHTML = text || "注文なし";
