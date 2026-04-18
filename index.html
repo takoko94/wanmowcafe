@@ -13,7 +13,6 @@
   src: url('YasashisaGothicBold-V2.otf') format('opentype');
 }
 
-/* ===== 基本 ===== */
 body{
   margin:0;
   font-family:'Yasashisa', sans-serif;
@@ -51,10 +50,9 @@ body{
   width:260px;
   display:block;
   margin:10px auto;
-  pointer-events:none;
 }
 
-/* ===== タブ ===== */
+/* タブ */
 .tabbar{
   display:flex;
   justify-content:center;
@@ -91,7 +89,7 @@ body{
   border-radius:999px;
 }
 
-/* ===== メニュー ===== */
+/* メニュー */
 .menu{
   display:flex;
   flex-wrap:wrap;
@@ -139,22 +137,32 @@ body{
   font-weight:bold;
 }
 
-/* ===== ボタン（元サイズ維持） ===== */
+/* ===== ボタンエリア（横1列固定） ===== */
 .item div{
   display:flex;
   justify-content:center;
   gap:4px;
   margin-top:6px;
+  flex-wrap:nowrap;
+  overflow:hidden;
 }
 
+/* ===== ボタン（固定サイズ） ===== */
 .qty-btn{
-  padding:5px 8px; /* ←元に戻す */
+  width:42px;
+  height:36px;
+  padding:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
   border:none;
   border-radius:999px;
-  font-size:12px;
   cursor:pointer;
+  background:#eee;
 }
 
+/* 色 */
 .minus10{ background:#f0d6d6; }
 .minus1{ background:#f5e1e1; }
 .zero{ background:#eee; }
@@ -164,27 +172,14 @@ body{
   color:white;
 }
 
-/* 🔥 数字だけ大きく可愛く */
+/* 🔥 数字だけ可愛く大きく */
 .qty-num{
-  display:inline-block;
-
-  min-width:36px;
-  padding:8px 10px;
-
-  font-size:16px;
+  font-size:14px;
   font-weight:bold;
-
-  border-radius:999px;
-
-  background:linear-gradient(145deg,#ffe4ea,#ffd6dc);
-  color:#5c4b42;
-
-  box-shadow:0 3px 6px rgba(0,0,0,0.15);
-
-  transform:translateY(-1px);
+  line-height:1;
 }
 
-/* ===== カート ===== */
+/* カート */
 .cart-title{
   font-size:20px;
   font-weight:bold;
@@ -210,7 +205,7 @@ body{
   cursor:pointer;
 }
 
-/* ===== 合計 ===== */
+/* 合計 */
 .total-box{
   margin-top:15px;
   padding:10px;
@@ -220,7 +215,7 @@ body{
   font-weight:bold;
 }
 
-/* ===== ボタン ===== */
+/* ボタン */
 .confirm,.reset{
   width:100%;
   padding:12px;
@@ -237,7 +232,7 @@ body{
 
 .reset{ background:#e6d5cc; }
 
-/* ===== 履歴 ===== */
+/* 履歴 */
 .history-box{
   margin-top:20px;
   background:#fff;
@@ -246,18 +241,11 @@ body{
   border:2px solid #e8dcd2;
 }
 
-/* =========================
-   📱 スマホ
-========================= */
+/* ===== スマホ ===== */
 @media (max-width:800px){
 
-  .container{
-    flex-direction:column;
-  }
-
-  .main,.sidebar{
-    width:100%;
-  }
+  .container{ flex-direction:column; }
+  .main,.sidebar{ width:100%; }
 
   .sidebar{
     position:fixed;
@@ -290,11 +278,14 @@ body{
     display:block;
   }
 
-  /* スマホでも数字を大きく */
+  /* スマホでも少しだけ大きく */
+  .qty-btn{
+    width:48px;
+    height:40px;
+  }
+
   .qty-num{
-    min-width:44px;
-    padding:10px 12px;
-    font-size:18px;
+    font-size:15px;
   }
 
   .cart-toggle{
@@ -351,7 +342,7 @@ body{
 
 <script>
 
-/* ===== データ ===== */
+/* データ */
 const menuData = {
 
 Drink:[
@@ -412,8 +403,8 @@ return total;
 }
 
 function toggleCart(){
-  document.querySelector(".sidebar").classList.toggle("active");
-  document.querySelector(".overlay").classList.toggle("active");
+document.querySelector(".sidebar").classList.toggle("active");
+document.querySelector(".overlay").classList.toggle("active");
 }
 
 function renderAll(){
@@ -467,19 +458,19 @@ ${count>0?`<div class="count-badge">×${count}</div>`:""}
 
 <div>
 <button class="qty-btn minus10" onclick="change('${item[0]}',-10)">
-  <span class="qty-num">-10</span>
+<span class="qty-num">-10</span>
 </button>
 <button class="qty-btn minus1" onclick="change('${item[0]}',-1)">
-  <span class="qty-num">-1</span>
+<span class="qty-num">-1</span>
 </button>
 <button class="qty-btn zero" onclick="clearItem('${item[0]}')">
-  <span class="qty-num">0</span>
+<span class="qty-num">0</span>
 </button>
 <button class="qty-btn add1" onclick="change('${item[0]}',1)">
-  <span class="qty-num">+1</span>
+<span class="qty-num">+1</span>
 </button>
 <button class="qty-btn add10" onclick="change('${item[0]}',10)">
-  <span class="qty-num">+10</span>
+<span class="qty-num">+10</span>
 </button>
 </div>
 `;
@@ -505,11 +496,8 @@ renderAll();
 }
 
 function updateUI(){
-document.getElementById("total").innerText =
-getTotal().toLocaleString();
-
-document.getElementById("floatingTotal").innerText =
-getTotal().toLocaleString();
+document.getElementById("total").innerText=getTotal().toLocaleString();
+document.getElementById("floatingTotal").innerText=getTotal().toLocaleString();
 
 let html="";
 for(let item in cart){
