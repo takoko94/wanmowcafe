@@ -186,7 +186,7 @@ body{
   font-size:14px;
   font-weight:bold;
   line-height:1;
-  color:#5c4b42; /* ←グレー */
+  color:#5c4b42;
 }
 
 /* +10だけ白 */
@@ -231,21 +231,48 @@ body{
 }
 
 /* ===== ボタン ===== */
+/* 🔥ここ追加：qty-btnを流用 */
 .confirm,.reset{
   width:100%;
-  padding:12px;
+  height:36px;
   margin-top:10px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border:none;
   border-radius:999px;
   font-size:16px;
   font-weight:bold;
+  cursor:pointer;
+
+  /* qty-btnと同じ押し心地 */
+  box-shadow:0 4px 0 rgba(0,0,0,0.15);
+  transition:all 0.1s ease;
 }
 
+.confirm:hover,
+.reset:hover{
+  transform:translateY(-2px);
+}
+
+.confirm:active,
+.reset:active{
+  transform:translateY(3px);
+  box-shadow:0 1px 0 rgba(0,0,0,0.2);
+}
+
+/* 色だけ分ける */
 .confirm{
-  background:#b88976;
+  background:#cfa18d;
   color:white;
 }
 
-.reset{ background:#e6d5cc; }
+.reset{
+  background:#eee;
+  color:#5c4b42;
+}
 
 /* ===== 履歴 ===== */
 .history-box{
