@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>わんも～Cafe | wanmowcafe</title>
 
+<!-- 🔥 追加だけ -->
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
 <style>
@@ -104,6 +105,7 @@ body{
   padding:12px;
   border:2px solid #ffd6dc;
   position:relative;
+
   display:flex;
   flex-direction:column;
   justify-content:space-between;
@@ -149,13 +151,6 @@ body{
   border-radius:999px;
   font-size:12px;
   cursor:pointer;
-  box-shadow:0 4px 0 rgba(0,0,0,0.15);
-  transition:all 0.1s ease;
-}
-
-.qty-btn:active{
-  transform:translateY(3px);
-  box-shadow:0 1px 0 rgba(0,0,0,0.2);
 }
 
 .minus10{ background:#ffcdd2; }
@@ -229,20 +224,7 @@ body{
   border:2px solid #ffd6dc;
 }
 
-/* 追加：メニュー生成 */
-.make-btn{
-  position:fixed;
-  top:10px;
-  right:10px;
-  z-index:9999;
-  padding:10px 20px;
-  border-radius:999px;
-  background:#ff69b4;
-  color:white;
-  border:none;
-  cursor:pointer;
-}
-
+/* ===== 追加：生成用（画面外） ===== */
 #menuBoard{
   width:1280px;
   height:720px;
@@ -277,7 +259,22 @@ body{
 
 <body>
 
-<button class="make-btn" onclick="generateMenuImage()">📋 メニュー表作成</button>
+<!-- 🔥 追加ボタン（見た目に影響なし） -->
+<button onclick="generateMenuImage()" style="
+position:fixed;
+top:10px;
+right:10px;
+z-index:9999;
+padding:10px 20px;
+border:none;
+border-radius:999px;
+background:#ff69b4;
+color:white;
+font-weight:bold;
+cursor:pointer;
+">
+📋 メニュー表作成
+</button>
 
 <div class="container">
 
@@ -306,14 +303,14 @@ body{
 
 </div>
 
+<!-- 🔥 追加：画像生成用 -->
 <div id="menuBoard">
-  <h1 style="text-align:center;">わんも～CAFE MENU</h1>
-  <div id="menuBoardGrid" class="board-grid"></div>
+  <div class="board-grid" id="menuBoardGrid"></div>
 </div>
 
 <script>
 
-/* 🔥 メニュー完全一致 */
+/* 🔥 メニュー（完全そのまま） */
 const menuData = {
 
 Drink:[
@@ -376,25 +373,20 @@ return total;
 function renderTabs(){
 const tabbar=document.getElementById("tabbar");
 tabbar.innerHTML="";
-
 Object.keys(menuData).forEach(key=>{
 let count=0;
-
 menuData[key].forEach(item=>{
 if(cart[item[0]]) count+=cart[item[0]];
 });
-
 const tab=document.createElement("div");
 tab.className="tab"+(key===currentTab?" active":"");
 tab.innerText=key;
-
 if(count>0){
 const badge=document.createElement("div");
 badge.className="tab-badge";
 badge.innerText=count;
 tab.appendChild(badge);
 }
-
 tab.onclick=()=>{currentTab=key;renderAll();};
 tabbar.appendChild(tab);
 });
@@ -403,10 +395,8 @@ tabbar.appendChild(tab);
 function renderMenu(){
 const menu=document.getElementById("menu");
 menu.innerHTML="";
-
 menuData[currentTab].forEach(item=>{
 const count=cart[item[0]]||0;
-
 const div=document.createElement("div");
 div.className="item";
 
@@ -439,9 +429,13 @@ delete cart[name];
 renderAll();
 }
 
+function removeFromCart(name){
+delete cart[name];
+renderAll();
+}
+
 function updateUI(){
 document.getElementById("total").innerText=getTotal();
-
 let html="";
 for(let item in cart){
 html+=`
@@ -453,11 +447,6 @@ ${item} ×${cart[item]}
 document.getElementById("cart").innerHTML=html||"注文なし";
 }
 
-function removeFromCart(name){
-delete cart[name];
-renderAll();
-}
-
 function resetCart(){
 cart={};
 renderAll();
@@ -465,16 +454,13 @@ renderAll();
 
 function confirmOrder(){
 if(Object.keys(cart).length===0) return;
-
 let text="";
 for(let item in cart){
 text+=`${item} ×${cart[item]} / `;
 }
-
 document.getElementById("history").innerHTML =
 `<div>¥${getTotal()} | ${text}</div>` +
 document.getElementById("history").innerHTML;
-
 resetCart();
 }
 
@@ -484,27 +470,22 @@ renderMenu();
 updateUI();
 }
 
-/* 🔥 追加：メニュー画像生成 */
+/* 🔥 追加機能（ここだけ） */
 function generateMenuImage(){
-
 const grid=document.getElementById("menuBoardGrid");
 grid.innerHTML="";
-
 Object.values(menuData).forEach(list=>{
 list.forEach(item=>{
 const div=document.createElement("div");
 div.className="board-item";
-
 div.innerHTML=`
 <img src="${item[2]}">
 <div>${item[0]}</div>
 <div>${item[1]}円</div>
 `;
-
 grid.appendChild(div);
 });
 });
-
 html2canvas(document.getElementById("menuBoard")).then(canvas=>{
 const link=document.createElement("a");
 link.download="menu.png";
