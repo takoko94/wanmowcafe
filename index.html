@@ -7,7 +7,7 @@
 
 <style>
 
-/* 🔥 フォント読み込み */
+/* 🔥 フォント */
 @font-face {
   font-family: 'Yasashisa';
   src: url('YasashisaGothicBold-V2.otf') format('opentype');
@@ -16,13 +16,13 @@
 body{
   margin:0;
   font-family:'Yasashisa', sans-serif;
-  background:#fffaf5; /* カフェ寄せ */
+  background:#fffaf5;
   user-select:none;
   padding:10px;
   letter-spacing:0.5px;
 }
 
-/* 中央寄せ */
+/* ===== レイアウト ===== */
 .container{
   display:flex;
   justify-content:center;
@@ -43,18 +43,17 @@ body{
   padding:20px;
 }
 
-/* ロゴ */
+/* ===== ロゴ ===== */
 .logo{
   width:260px;
   display:block;
   margin:10px auto;
-  pointer-events:none;
 }
 
-/* タブ */
+/* ===== タブ ===== */
 .tabbar{
   display:flex;
-  justify-content:center; /* 中央 */
+  justify-content:center;
   overflow-x:auto;
   background:#f3ebe5;
   padding:10px;
@@ -75,7 +74,6 @@ body{
   color:white;
 }
 
-/* バッジ */
 .tab-badge{
   position:absolute;
   top:-5px;
@@ -87,7 +85,7 @@ body{
   border-radius:999px;
 }
 
-/* メニュー */
+/* ===== メニュー ===== */
 .menu{
   display:flex;
   flex-wrap:wrap;
@@ -102,7 +100,6 @@ body{
   border-radius:15px;
   padding:12px;
   border:2px solid #e8dcd2;
-
   display:flex;
   flex-direction:column;
   justify-content:space-between;
@@ -111,7 +108,6 @@ body{
 .item img{
   width:100%;
   border-radius:10px;
-  pointer-events:none;
 }
 
 .count-badge{
@@ -125,18 +121,7 @@ body{
   font-size:12px;
 }
 
-/* 商品名高さ固定 */
-.item p:first-of-type{
-  min-height:40px;
-}
-
-/* 価格位置固定 */
-.item p:nth-of-type(2){
-  margin-top:auto;
-  font-weight:bold;
-}
-
-/* ボタン */
+/* ===== ボタン ===== */
 .item div{
   display:flex;
   justify-content:center;
@@ -145,13 +130,12 @@ body{
 }
 
 .qty-btn{
-  padding:9px 12px; /* ←サイズ戻し */
+  padding:9px 12px;
   border:none;
   border-radius:999px;
   font-size:13px;
   cursor:pointer;
   box-shadow:0 4px 0 rgba(0,0,0,0.12);
-  transition:all 0.12s ease;
 }
 
 .qty-btn:hover{
@@ -160,7 +144,6 @@ body{
 
 .qty-btn:active{
   transform:translateY(2px);
-  box-shadow:0 1px 0 rgba(0,0,0,0.15);
 }
 
 .minus10{ background:#f0d6d6; }
@@ -172,7 +155,7 @@ body{
   color:white;
 }
 
-/* カート */
+/* ===== カート ===== */
 .cart-title{
   font-size:20px;
   font-weight:bold;
@@ -198,7 +181,7 @@ body{
   cursor:pointer;
 }
 
-/* 合計 */
+/* ===== 合計 ===== */
 .total-box{
   margin-top:15px;
   padding:10px;
@@ -208,7 +191,7 @@ body{
   font-weight:bold;
 }
 
-/* ボタン */
+/* ===== ボタン ===== */
 .confirm,.reset{
   width:100%;
   padding:12px;
@@ -225,7 +208,7 @@ body{
 
 .reset{ background:#e6d5cc; }
 
-/* 履歴 */
+/* ===== 履歴 ===== */
 .history-box{
   margin-top:20px;
   background:#fff;
@@ -234,18 +217,78 @@ body{
   border:2px solid #e8dcd2;
 }
 
-/* スマホ */
+/* =========================
+   📱 スマホ神UI
+========================= */
 @media (max-width:800px){
+
   .container{ flex-direction:column; }
   .main,.sidebar{ width:100%; }
-  .sidebar{ position:static; height:auto; }
-  .item{ width:45%; }
+
+  /* ▼ 下から出るカート */
+  .sidebar{
+    position:fixed;
+    bottom:-85%;
+    left:0;
+    width:100%;
+    height:80%;
+    border-radius:20px 20px 0 0;
+    transition:0.3s;
+    z-index:100;
+    box-shadow:0 -5px 20px rgba(0,0,0,0.15);
+  }
+
+  .sidebar.active{
+    bottom:0;
+  }
+
+  /* ▼ 背景暗く */
+  .overlay{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.3);
+    opacity:0;
+    pointer-events:none;
+    transition:0.3s;
+    z-index:90;
+  }
+
+  .overlay.active{
+    opacity:1;
+    pointer-events:auto;
+  }
+
+  /* ▼ ボタン大きく */
+  .qty-btn{
+    padding:14px 16px;
+    font-size:16px;
+    background:#ffe4ea;
+  }
+
+  /* ▼ フローティングボタン */
+  .cart-toggle{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    background:#cfa18d;
+    color:white;
+    padding:14px 16px;
+    border-radius:999px;
+    z-index:110;
+    font-weight:bold;
+  }
+
 }
 
 </style>
 </head>
 
 <body>
+
+<div class="overlay" onclick="toggleCart()"></div>
 
 <div class="container">
 
@@ -274,18 +317,20 @@ body{
 
 </div>
 
+<div class="cart-toggle" onclick="toggleCart()">
+🛒 <span id="floatingTotal">0</span>円
+</div>
+
 <script>
 
-/* 🔥 元のメニュー完全維持 */
+/* ===== 元データ完全維持 ===== */
 const menuData = {
-
 Drink:[
 ["も～も～ミルクラテ",3000,"milk_latte.png"],
 ["わんプレッソラテ",3000,"wanpresso.png"],
 ["も～っとしゅわっとクリームソーダ",3000,"cream_soda.png"],
 ["ちょっぴりビターなわんコーヒーフロート",3000,"coffee_float.png"]
 ],
-
 Food:[
 ["わんわんサンド",3000,"wanwansand.png"],
 ["わんも～弁当",4000,"wanmow_bento.png"],
@@ -294,33 +339,27 @@ Food:[
 ["も～も～ハニートースト",4000,"honey_toast.png"],
 ["まんぷくハンバーグ",4000,"hamburg.png"]
 ],
-
 Dessert:[
 ["いぬぷりん（いちご味）",3000,"pudding_strawberry.png"],
 ["いぬぷりん（マンゴー味）",3000,"pudding_mango.png"]
 ],
-
 Joint:[
 ["ぷにっとわんくーる",3000,"wan_cool.png"],
 ["ぷにっとも～くーる",3000,"mow_cool.png"]
 ],
-
 Rescue:[
 ["も～も～点滴いちごみるく",3000,"strawberry_milk.png"],
 ["わんわんレスキューサンド",3000,"rescue_sand.png"],
 ["わんわんレスキュードック",3000,"rescue_dog.png"]
 ],
-
 期間限定:[
 ["しゅわしゅわオレンジソーダ",5000,"orange_soda.png"],
 ["わんわんキッシュ",5000,"wan_quiche.png"],
 ["も～も～キッシュ",5000,"mow_quiche.png"]
 ],
-
 Secret:[
 ["いちご",4000,"secret_strawberry.png"]
 ]
-
 };
 
 let currentTab="Drink";
@@ -334,6 +373,11 @@ if(cart[item[0]]) total+=item[1]*cart[item[0]];
 });
 });
 return total;
+}
+
+function toggleCart(){
+  document.querySelector(".sidebar").classList.toggle("active");
+  document.querySelector(".overlay").classList.toggle("active");
 }
 
 function renderAll(){
@@ -381,7 +425,7 @@ div.className="item";
 
 div.innerHTML=`
 ${count>0?`<div class="count-badge">×${count}</div>`:""}
-<img src="${item[2]}" draggable="false">
+<img src="${item[2]}">
 <p>${item[0]}</p>
 <p>${item[1].toLocaleString()}円</p>
 
@@ -416,6 +460,9 @@ renderAll();
 
 function updateUI(){
 document.getElementById("total").innerText =
+getTotal().toLocaleString();
+
+document.getElementById("floatingTotal").innerText =
 getTotal().toLocaleString();
 
 let html="";
