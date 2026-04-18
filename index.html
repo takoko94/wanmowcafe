@@ -5,9 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>わんも～Cafe | wanmowcafe</title>
 
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
 <style>
 
-/* 🔥 フォント */
+/* 🔥 フォント読み込み */
 @font-face {
   font-family: 'Yasashisa';
   src: url('YasashisaGothicBold-V2.otf') format('opentype');
@@ -16,14 +18,13 @@
 body{
   margin:0;
   font-family:'Yasashisa', sans-serif;
-  background:#fffaf5;
+  background:#fff7f5;
   user-select:none;
   padding:10px;
   letter-spacing:0.5px;
-  overflow-x:hidden;
 }
 
-/* ===== レイアウト ===== */
+/* 中央寄せ */
 .container{
   display:flex;
   justify-content:center;
@@ -35,14 +36,13 @@ body{
 
 .sidebar{
   width:25%;
-  background:#fffdfb;
-  border-left:3px solid #e5d6cc;
+  background:#fffafc;
+  border-left:4px solid #ffc0cb;
   position:sticky;
   top:0;
   height:100vh;
   overflow-y:auto;
   padding:20px;
-  box-sizing:border-box;
 }
 
 /* ロゴ */
@@ -50,14 +50,15 @@ body{
   width:260px;
   display:block;
   margin:10px auto;
+  pointer-events:none;
 }
 
-/* ===== タブ ===== */
+/* タブ */
 .tabbar{
   display:flex;
   justify-content:center;
   overflow-x:auto;
-  background:#f3ebe5;
+  background:#ffe4ea;
   padding:10px;
 }
 
@@ -69,27 +70,25 @@ body{
   cursor:pointer;
   position:relative;
   font-weight:bold;
-  flex-shrink:0;
 }
 
 .tab.active{
-  background:#d9a5a5;
+  background:hotpink;
   color:white;
 }
 
-/* バッジ */
 .tab-badge{
   position:absolute;
   top:-5px;
   right:-5px;
-  background:#cfa18d;
+  background:hotpink;
   color:white;
   font-size:11px;
   padding:3px 6px;
   border-radius:999px;
 }
 
-/* ===== メニュー ===== */
+/* メニュー */
 .menu{
   display:flex;
   flex-wrap:wrap;
@@ -103,68 +102,55 @@ body{
   background:white;
   border-radius:15px;
   padding:12px;
-  border:2px solid #e8dcd2;
+  border:2px solid #ffd6dc;
+  position:relative;
   display:flex;
   flex-direction:column;
   justify-content:space-between;
-  position:relative;
 }
 
 .item img{
   width:100%;
   border-radius:10px;
+  pointer-events:none;
 }
 
 .count-badge{
   position:absolute;
   top:8px;
   right:8px;
-  background:#cfa18d;
+  background:hotpink;
   color:white;
   border-radius:999px;
   padding:4px 8px;
   font-size:12px;
 }
 
-/* 商品名 */
 .item p:first-of-type{
   min-height:40px;
 }
 
-/* 価格 */
 .item p:nth-of-type(2){
   margin-top:auto;
   font-weight:bold;
 }
 
-/* ===== ボタンエリア ===== */
+/* ボタン */
 .item div{
   display:flex;
   justify-content:center;
   gap:4px;
   margin-top:6px;
-  flex-wrap:nowrap;
 }
 
-/* ===== ボタン ===== */
 .qty-btn{
-  width:42px;
-  height:36px;
-  padding:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
+  padding:5px 8px;
   border:none;
   border-radius:999px;
+  font-size:12px;
   cursor:pointer;
-
   box-shadow:0 4px 0 rgba(0,0,0,0.15);
   transition:all 0.1s ease;
-}
-
-.qty-btn:hover{
-  transform:translateY(-2px);
 }
 
 .qty-btn:active{
@@ -172,29 +158,16 @@ body{
   box-shadow:0 1px 0 rgba(0,0,0,0.2);
 }
 
-/* 色 */
-.minus10{ background:#f0d6d6; }
-.minus1{ background:#f5e1e1; }
+.minus10{ background:#ffcdd2; }
+.minus1{ background:#ffe0e0; }
 .zero{ background:#eee; }
-.add1{ background:#e7d8cf; }
+.add1{ background:#ffd6e7; }
 .add10{
-  background:#cfa18d;
-}
-
-/* 🔥 数字 */
-.qty-num{
-  font-size:14px;
-  font-weight:bold;
-  line-height:1;
-  color:#5c4b42; /* ←グレー */
-}
-
-/* +10だけ白 */
-.add10 .qty-num{
+  background:linear-gradient(45deg,pink,hotpink);
   color:white;
 }
 
-/* ===== カート ===== */
+/* カート */
 .cart-title{
   font-size:20px;
   font-weight:bold;
@@ -208,11 +181,11 @@ body{
   border-radius:10px;
   padding:8px;
   margin-bottom:8px;
-  border:2px dashed #e8dcd2;
+  border:2px dashed #ffd6dc;
 }
 
 .cart-remove{
-  background:#d9a5a5;
+  background:#ffb3c1;
   border:none;
   border-radius:50%;
   width:22px;
@@ -220,17 +193,17 @@ body{
   cursor:pointer;
 }
 
-/* ===== 合計 ===== */
+/* 合計 */
 .total-box{
   margin-top:15px;
   padding:10px;
-  background:#f3ebe5;
+  background:#ffe4ea;
   border-radius:10px;
   font-size:20px;
   font-weight:bold;
 }
 
-/* ===== ボタン ===== */
+/* ボタン */
 .confirm,.reset{
   width:100%;
   padding:12px;
@@ -241,79 +214,62 @@ body{
 }
 
 .confirm{
-  background:#b88976;
+  background:linear-gradient(45deg,#ff9ecb,#ff69b4);
   color:white;
 }
 
-.reset{ background:#e6d5cc; }
+.reset{ background:#ffd1d1; }
 
-/* ===== 履歴 ===== */
+/* 履歴 */
 .history-box{
   margin-top:20px;
   background:#fff;
   border-radius:10px;
   padding:10px;
-  border:2px solid #e8dcd2;
+  border:2px solid #ffd6dc;
 }
 
-/* ===== スマホ ===== */
-@media (max-width:800px){
+/* 追加：メニュー生成 */
+.make-btn{
+  position:fixed;
+  top:10px;
+  right:10px;
+  z-index:9999;
+  padding:10px 20px;
+  border-radius:999px;
+  background:#ff69b4;
+  color:white;
+  border:none;
+  cursor:pointer;
+}
 
-  .container{ flex-direction:column; }
-  .main,.sidebar{ width:100%; }
+#menuBoard{
+  width:1280px;
+  height:720px;
+  background:#fff7f5;
+  position:fixed;
+  left:-9999px;
+  top:0;
+  padding:30px;
+}
 
-  .sidebar{
-    position:fixed;
-    bottom:-100%;
-    left:0;
-    width:100vw;
-    height:70%;
-    top:auto;
-    border-radius:20px 20px 0 0;
-    transition:0.3s;
-    z-index:100;
-  }
+.board-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:20px;
+}
 
-  .sidebar.active{
-    bottom:0;
-  }
+.board-item{
+  background:white;
+  border-radius:15px;
+  padding:10px;
+  text-align:center;
+  border:2px solid #ffd6dc;
+}
 
-  .overlay{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,0.3);
-    display:none;
-    z-index:90;
-  }
-
-  .overlay.active{
-    display:block;
-  }
-
-  .qty-btn{
-    width:44px;
-    height:38px;
-  }
-
-  .qty-num{
-    font-size:15px;
-  }
-
-  .cart-toggle{
-    position:fixed;
-    bottom:20px;
-    right:20px;
-    background:#cfa18d;
-    color:white;
-    padding:14px 16px;
-    border-radius:999px;
-    z-index:110;
-    font-weight:bold;
-  }
-
+.board-item img{
+  width:100%;
+  border-radius:10px;
 }
 
 </style>
@@ -321,7 +277,7 @@ body{
 
 <body>
 
-<div class="overlay" onclick="toggleCart()"></div>
+<button class="make-btn" onclick="generateMenuImage()">📋 メニュー表作成</button>
 
 <div class="container">
 
@@ -336,7 +292,7 @@ body{
 <div id="cart">注文なし</div>
 
 <div class="total-box">
-合計: <span id="total">0</span>円
+合計: ¥<span id="total">0</span>
 </div>
 
 <button class="confirm" onclick="confirmOrder()">確定する</button>
@@ -350,19 +306,23 @@ body{
 
 </div>
 
-<div class="cart-toggle" onclick="toggleCart()">
-🛒 <span id="floatingTotal">0</span>円
+<div id="menuBoard">
+  <h1 style="text-align:center;">わんも～CAFE MENU</h1>
+  <div id="menuBoardGrid" class="board-grid"></div>
 </div>
 
 <script>
 
+/* 🔥 メニュー完全一致 */
 const menuData = {
+
 Drink:[
 ["も～も～ミルクラテ",3000,"milk_latte.png"],
 ["わんプレッソラテ",3000,"wanpresso.png"],
 ["も～っとしゅわっとクリームソーダ",3000,"cream_soda.png"],
 ["ちょっぴりビターなわんコーヒーフロート",3000,"coffee_float.png"]
 ],
+
 Food:[
 ["わんわんサンド",3000,"wanwansand.png"],
 ["わんも～弁当",4000,"wanmow_bento.png"],
@@ -371,27 +331,33 @@ Food:[
 ["も～も～ハニートースト",4000,"honey_toast.png"],
 ["まんぷくハンバーグ",4000,"hamburg.png"]
 ],
+
 Dessert:[
 ["いぬぷりん（いちご味）",3000,"pudding_strawberry.png"],
 ["いぬぷりん（マンゴー味）",3000,"pudding_mango.png"]
 ],
+
 Joint:[
 ["ぷにっとわんくーる",3000,"wan_cool.png"],
 ["ぷにっとも～くーる",3000,"mow_cool.png"]
 ],
+
 Rescue:[
 ["も～も～点滴いちごみるく",3000,"strawberry_milk.png"],
 ["わんわんレスキューサンド",3000,"rescue_sand.png"],
 ["わんわんレスキュードック",3000,"rescue_dog.png"]
 ],
+
 期間限定:[
 ["しゅわしゅわオレンジソーダ",5000,"orange_soda.png"],
 ["わんわんキッシュ",5000,"wan_quiche.png"],
 ["も～も～キッシュ",5000,"mow_quiche.png"]
 ],
+
 Secret:[
 ["いちご",4000,"secret_strawberry.png"]
 ]
+
 };
 
 let currentTab="Drink";
@@ -405,17 +371,6 @@ if(cart[item[0]]) total+=item[1]*cart[item[0]];
 });
 });
 return total;
-}
-
-function toggleCart(){
-document.querySelector(".sidebar").classList.toggle("active");
-document.querySelector(".overlay").classList.toggle("active");
-}
-
-function renderAll(){
-renderTabs();
-renderMenu();
-updateUI();
 }
 
 function renderTabs(){
@@ -459,24 +414,13 @@ div.innerHTML=`
 ${count>0?`<div class="count-badge">×${count}</div>`:""}
 <img src="${item[2]}">
 <p>${item[0]}</p>
-<p>${item[1].toLocaleString()}円</p>
-
+<p>¥${item[1]}</p>
 <div>
-<button class="qty-btn minus10" onclick="change('${item[0]}',-10)">
-<span class="qty-num">-10</span>
-</button>
-<button class="qty-btn minus1" onclick="change('${item[0]}',-1)">
-<span class="qty-num">-1</span>
-</button>
-<button class="qty-btn zero" onclick="clearItem('${item[0]}')">
-<span class="qty-num">0</span>
-</button>
-<button class="qty-btn add1" onclick="change('${item[0]}',1)">
-<span class="qty-num">+1</span>
-</button>
-<button class="qty-btn add10" onclick="change('${item[0]}',10)">
-<span class="qty-num">+10</span>
-</button>
+<button class="qty-btn minus10" onclick="change('${item[0]}',-10)">-10</button>
+<button class="qty-btn minus1" onclick="change('${item[0]}',-1)">-1</button>
+<button class="qty-btn zero" onclick="clearItem('${item[0]}')">0</button>
+<button class="qty-btn add1" onclick="change('${item[0]}',1)">+1</button>
+<button class="qty-btn add10" onclick="change('${item[0]}',10)">+10</button>
 </div>
 `;
 
@@ -495,14 +439,8 @@ delete cart[name];
 renderAll();
 }
 
-function removeFromCart(name){
-delete cart[name];
-renderAll();
-}
-
 function updateUI(){
-document.getElementById("total").innerText=getTotal().toLocaleString();
-document.getElementById("floatingTotal").innerText=getTotal().toLocaleString();
+document.getElementById("total").innerText=getTotal();
 
 let html="";
 for(let item in cart){
@@ -513,6 +451,11 @@ ${item} ×${cart[item]}
 </div>`;
 }
 document.getElementById("cart").innerHTML=html||"注文なし";
+}
+
+function removeFromCart(name){
+delete cart[name];
+renderAll();
 }
 
 function resetCart(){
@@ -529,10 +472,45 @@ text+=`${item} ×${cart[item]} / `;
 }
 
 document.getElementById("history").innerHTML =
-`<div>${getTotal().toLocaleString()}円 | ${text}</div>` +
+`<div>¥${getTotal()} | ${text}</div>` +
 document.getElementById("history").innerHTML;
 
 resetCart();
+}
+
+function renderAll(){
+renderTabs();
+renderMenu();
+updateUI();
+}
+
+/* 🔥 追加：メニュー画像生成 */
+function generateMenuImage(){
+
+const grid=document.getElementById("menuBoardGrid");
+grid.innerHTML="";
+
+Object.values(menuData).forEach(list=>{
+list.forEach(item=>{
+const div=document.createElement("div");
+div.className="board-item";
+
+div.innerHTML=`
+<img src="${item[2]}">
+<div>${item[0]}</div>
+<div>${item[1]}円</div>
+`;
+
+grid.appendChild(div);
+});
+});
+
+html2canvas(document.getElementById("menuBoard")).then(canvas=>{
+const link=document.createElement("a");
+link.download="menu.png";
+link.href=canvas.toDataURL();
+link.click();
+});
 }
 
 renderAll();
