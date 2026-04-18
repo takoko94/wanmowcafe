@@ -208,7 +208,9 @@ body{
   border:2px solid #ffd6dc;
 }
 
-/* ===== 🔥 追加CSS（ここだけ追加） ===== */
+/* =========================
+   🔥 追加（スマホ修正）
+   ========================= */
 @media screen and (max-width:1024px){
 
   .container{
@@ -222,8 +224,9 @@ body{
 
   .sidebar{
     position:fixed !important;
-    bottom:0;
+    bottom:0 !important;
     left:0;
+    top:auto !important; /* ← これが今回の修正 */
     width:100%;
     height:65px;
     overflow:hidden;
@@ -284,7 +287,7 @@ body{
 
 <div class="sidebar" id="sidebar">
 
-<!-- 🔥 追加HTML -->
+<!-- 🔥 追加 -->
 <div class="toggle-bar" onclick="toggleSidebar()"></div>
 
 <div class="cart-title">注文内容</div>
@@ -481,7 +484,7 @@ document.getElementById("history").innerHTML;
 resetCart();
 }
 
-/* 🔥 追加JS */
+/* 🔥 追加 */
 function toggleSidebar(){
   document.getElementById("sidebar").classList.toggle("open");
 }
