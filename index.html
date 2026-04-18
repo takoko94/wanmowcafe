@@ -5,18 +5,17 @@
 <title>わんも～Cafe | wanmowcafe</title>
 
 <style>
-body {
+body{
   margin:0;
   font-family:sans-serif;
   background:#fff7f5;
   user-select:none;
 }
 
-.container { display:flex; }
-.main { width:70%; }
+.container{ display:flex; }
+.main{ width:70%; }
 
-/* 右 */
-.sidebar {
+.sidebar{
   width:30%;
   background:#fffafc;
   border-left:4px solid #ffc0cb;
@@ -27,8 +26,7 @@ body {
   padding:20px;
 }
 
-/* ロゴ */
-.logo {
+.logo{
   width:260px;
   display:block;
   margin:10px auto;
@@ -36,7 +34,7 @@ body {
 }
 
 /* タブ */
-.tabbar {
+.tabbar{
   display:flex;
   overflow-x:auto;
   background:#ffe4ea;
@@ -45,7 +43,7 @@ body {
   top:0;
 }
 
-.tab {
+.tab{
   margin:0 5px;
   padding:10px 15px;
   background:white;
@@ -54,12 +52,12 @@ body {
   position:relative;
 }
 
-.tab.active {
+.tab.active{
   background:hotpink;
   color:white;
 }
 
-.tab-badge {
+.tab-badge{
   position:absolute;
   top:-5px;
   right:-5px;
@@ -71,7 +69,7 @@ body {
 }
 
 /* メニュー */
-.menu {
+.menu{
   display:flex;
   flex-wrap:wrap;
   justify-content:center;
@@ -79,7 +77,7 @@ body {
   padding:10px;
 }
 
-.item {
+.item{
   width:220px;
   background:white;
   border-radius:15px;
@@ -88,14 +86,13 @@ body {
   position:relative;
 }
 
-.item img {
+.item img{
   width:100%;
   border-radius:10px;
   pointer-events:none;
 }
 
-/* 個数 */
-.count-badge {
+.count-badge{
   position:absolute;
   top:8px;
   right:8px;
@@ -107,14 +104,14 @@ body {
 }
 
 /* ボタン */
-.item div {
+.item div{
   display:flex;
   justify-content:center;
   gap:4px;
   margin-top:6px;
 }
 
-.qty-btn {
+.qty-btn{
   padding:5px 8px;
   border:none;
   border-radius:999px;
@@ -122,18 +119,24 @@ body {
   cursor:pointer;
 }
 
-.minus10 { background:#ffcdd2; }
-.minus1  { background:#ffe0e0; }
-.zero    { background:#eee; }
-.add1    { background:#ffd6e7; }
-.add10   { background:linear-gradient(45deg,pink,hotpink); color:white; }
+.minus10{ background:#ffcdd2; }
+.minus1{ background:#ffe0e0; }
+.zero{ background:#eee; }
+.add1{ background:#ffd6e7; }
+.add10{
+  background:linear-gradient(45deg,pink,hotpink);
+  color:white;
+}
 
-.qty-btn:active { transform:scale(0.85); }
+.qty-btn:active{ transform:scale(0.85); }
 
 /* カート */
-.cart-title { font-size:20px; font-weight:bold; }
+.cart-title{
+  font-size:20px;
+  font-weight:bold;
+}
 
-.cart-item {
+.cart-item{
   display:flex;
   justify-content:space-between;
   align-items:center;
@@ -144,7 +147,7 @@ body {
   border:2px dashed #ffd6dc;
 }
 
-.cart-remove {
+.cart-remove{
   background:#ffb3c1;
   border:none;
   border-radius:50%;
@@ -153,11 +156,7 @@ body {
   cursor:pointer;
 }
 
-.cart-remove:active {
-  transform:scale(0.8);
-}
-
-.total-box {
+.total-box{
   margin-top:15px;
   padding:10px;
   background:#ffe4ea;
@@ -166,8 +165,7 @@ body {
   font-weight:bold;
 }
 
-/* ボタン */
-.confirm,.reset {
+.confirm,.reset{
   width:100%;
   padding:12px;
   margin-top:10px;
@@ -176,33 +174,20 @@ body {
   font-weight:bold;
 }
 
-.confirm {
+.confirm{
   background:linear-gradient(45deg,#ff9ecb,#ff69b4);
   color:white;
 }
 
-.reset { background:#ffd1d1; }
+.reset{ background:#ffd1d1; }
 
-.confirm:active,.reset:active {
-  transform:scale(0.9);
-}
-
-/* 履歴 */
-.history-box {
+.history-box{
   margin-top:20px;
   background:#fff;
   border-radius:10px;
   padding:10px;
   border:2px solid #ffd6dc;
 }
-
-/* ポン */
-@keyframes pop {
-  0%{transform:scale(1);}
-  50%{transform:scale(1.2);}
-  100%{transform:scale(1);}
-}
-.pop { animation:pop 0.2s ease; }
 </style>
 </head>
 
@@ -236,10 +221,52 @@ body {
 </div>
 
 <script>
+
+/* 🔥 ここが唯一のデータ（これ以外にmenuDataを作らない） */
 const menuData = {
-"Drink":[["も～も～ミルクラテ",3000,"milk_latte.png"]],
-"Food":[["わんも～弁当",4000,"wanmow_bento.png"]],
-"Rescue":[["も～も～点滴いちごみるく",3000,"strawberry_milk.png"]]
+
+Drink:[
+["も～も～ミルクラテ",3000,"milk_latte.png"],
+["わんプレッソラテ",3000,"wanpresso.png"],
+["も～っとしゅわっとクリームソーダ",3000,"cream_soda.png"],
+["ちょっぴりビターなわんコーヒーフロート",3000,"coffee_float.png"]
+],
+
+Food:[
+["わんわんサンド",3000,"wanwansand.png"],
+["わんも～弁当",4000,"wanmow_bento.png"],
+["わんも～プレート",6000,"wanmow_plate.png"],
+["ぎゅっとぽかぽかクリームシチュー",3000,"mowmow_stew.png"],
+["も～も～ハニートースト",4000,"honey_toast.png"],
+["まんぷくハンバーグ",4000,"hamburg.png"]
+],
+
+Dessert:[
+["いぬぷりん（いちご味）",3000,"pudding_strawberry.png"],
+["いぬぷりん（マンゴー味）",3000,"pudding_mango.png"]
+],
+
+Joint:[
+["ぷにっとわんくーる",3000,"wan_cool.png"],
+["ぷにっとも～くーる",3000,"mow_cool.png"]
+],
+
+Rescue:[
+["も～も～点滴いちごみるく",3000,"strawberry_milk.png"],
+["わんわんレスキューサンド",3000,"rescue_sand.png"],
+["わんわんレスキュードック",3000,"rescue_dog.png"]
+],
+
+期間限定:[
+["しゅわしゅわオレンジソーダ",5000,"orange_soda.png"],
+["わんわんキッシュ",5000,"wan_quiche.png"],
+["も～も～キッシュ",5000,"mow_quiche.png"]
+],
+
+Secret:[
+["いちご",4000,"secret_strawberry.png"]
+]
+
 };
 
 let currentTab="Drink";
@@ -252,39 +279,37 @@ function renderTabs(){
 const tabbar=document.getElementById("tabbar");
 tabbar.innerHTML="";
 
-for(let key in menuData){
+Object.keys(menuData).forEach(key=>{
 
 let count=0;
 menuData[key].forEach(item=>{
 if(cart[item[0]]) count+=cart[item[0]];
 });
 
-const div=document.createElement("div");
-div.className="tab"+(key===currentTab?" active":"");
-div.innerText=key;
+const tab=document.createElement("div");
+tab.className="tab"+(key===currentTab?" active":"");
+tab.innerText=key;
 
 if(count>0){
 const badge=document.createElement("div");
 badge.className="tab-badge";
 badge.innerText=count;
-div.appendChild(badge);
+tab.appendChild(badge);
 }
 
-div.onclick=()=>{
+tab.onclick=()=>{
 currentTab=key;
-renderTabs();
-renderMenu();
+renderAll();
 };
 
-tabbar.appendChild(div);
-}
+tabbar.appendChild(tab);
+});
 }
 
 /* メニュー */
 function renderMenu(){
 const menu=document.getElementById("menu");
 menu.innerHTML="";
-menu.className="menu";
 
 menuData[currentTab].forEach(item=>{
 const count=cart[item[0]]||0;
@@ -311,97 +336,69 @@ menu.appendChild(div);
 });
 }
 
-/* ポン */
-function popEffect(){
-const el=document.querySelector(".total-box");
-el.classList.remove("pop");
-void el.offsetWidth;
-el.classList.add("pop");
-}
-
-/* 操作 */
-function addItem(name,price,qty){
-total+=price*qty;
-cart[name]=(cart[name]||0)+qty;
-updateUI();
-renderMenu();
-popEffect();
-}
-
-function removeItem(name,price,qty){
-if(!cart[name])return;
-cart[name]-=qty;
-total-=price*qty;
-if(cart[name]<=0)delete cart[name];
-if(total<0)total=0;
-updateUI();
-renderMenu();
-popEffect();
-}
-
-function clearItem(name){
-if(!cart[name])return;
-
-let price=0;
-for(let key in menuData){
-menuData[key].forEach(item=>{
-if(item[0]===name)price=item[1];
-});
-}
-
-total-=price*cart[name];
-delete cart[name];
-
-updateUI();
-renderMenu();
-}
-
-/* カート削除 */
-function removeFromCart(name){
-if(!cart[name])return;
-
-let price=0;
-for(let key in menuData){
-menuData[key].forEach(item=>{
-if(item[0]===name)price=item[1];
-});
-}
-
-total-=price*cart[name];
-delete cart[name];
-
-updateUI();
-renderMenu();
-}
-
-/* UI */
+/* カート */
 function updateUI(){
 document.getElementById("total").innerText=total;
 
-let text="";
+let html="";
 for(let item in cart){
-text+=`
+html+=`
 <div class="cart-item">
 ${item} ×${cart[item]}
 <button class="cart-remove" onclick="removeFromCart('${item}')">×</button>
 </div>`;
 }
 
-document.getElementById("cart").innerHTML=text||"注文なし";
+document.getElementById("cart").innerHTML=html||"注文なし";
+}
 
-renderTabs();
+/* 操作 */
+function addItem(name,price,qty){
+total+=price*qty;
+cart[name]=(cart[name]||0)+qty;
+renderAll();
+}
+
+function removeItem(name,price,qty){
+if(!cart[name]) return;
+cart[name]-=qty;
+total-=price*qty;
+
+if(cart[name]<=0) delete cart[name];
+if(total<0) total=0;
+
+renderAll();
+}
+
+function clearItem(name){
+if(!cart[name]) return;
+
+let price=0;
+Object.values(menuData).forEach(list=>{
+list.forEach(item=>{
+if(item[0]===name) price=item[1];
+});
+});
+
+total-=price*cart[name];
+delete cart[name];
+
+renderAll();
+}
+
+function removeFromCart(name){
+clearItem(name);
 }
 
 /* その他 */
 function resetCart(){
 total=0;
 cart={};
-updateUI();
-renderMenu();
+renderAll();
 }
 
 function confirmOrder(){
-if(Object.keys(cart).length===0)return;
+if(Object.keys(cart).length===0) return;
 
 let text="";
 for(let item in cart){
@@ -415,8 +412,16 @@ historyList.map(h=>`<div>${h}</div>`).join("");
 resetCart();
 }
 
+/* 🔥 全部再描画 */
+function renderAll(){
 renderTabs();
 renderMenu();
+updateUI();
+}
+
+/* 初期 */
+renderAll();
+
 </script>
 
 </body>
