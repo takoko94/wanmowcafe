@@ -11,12 +11,12 @@ body {
   background: #fff7f5;
 }
 
-/* 全体レイアウト */
+/* レイアウト */
 .container {
   display: flex;
 }
 
-/* 左（メニュー側） */
+/* 左（メニュー） */
 .main {
   width: 70%;
 }
@@ -35,7 +35,7 @@ body {
 
 /* ロゴ */
 .logo {
-  width: 250px;
+  width: 260px;
   display: block;
   margin: 10px auto;
 }
@@ -56,6 +56,7 @@ body {
   background: white;
   border-radius: 10px;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .tab.active {
@@ -82,6 +83,7 @@ body {
 
 .item img {
   width: 100%;
+  border-radius: 10px;
 }
 
 /* ボタン */
@@ -99,11 +101,6 @@ button {
 .minus10 { background: #aaa; color: white; }
 
 /* カート */
-.cart-title {
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
 .total {
   font-size: 20px;
   margin-top: 10px;
@@ -126,10 +123,10 @@ button {
 
   </div>
 
-  <!-- 右カート -->
+  <!-- 右 -->
   <div class="sidebar">
 
-    <div class="cart-title">🧾 注文内容</div>
+    <h3>🧾 注文内容</h3>
     <div id="cart">注文なし</div>
 
     <div class="total">
@@ -148,17 +145,49 @@ button {
 
 <script>
 const menuData = {
+
   "Drink": [
     ["も～も～ミルクラテ",3000,"milk_latte.png"],
-    ["わんプレッソラテ",3000,"wanpresso.png"]
+    ["わんプレッソラテ",3000,"wanpresso.png"],
+    ["も～っとしゅわっとクリームソーダ",3000,"cream_soda.png"],
+    ["ちょっぴりビターなわんコーヒーフロート",3000,"coffee_float.png"]
   ],
+
   "Food": [
+    ["わんわんサンド",3000,"wanwansand.png"],
     ["わんも～弁当",4000,"wanmow_bento.png"],
-    ["わんも～プレート",6000,"wanmow_plate.png"]
+    ["わんも～プレート",6000,"wanmow_plate.png"],
+    ["ぎゅっとぽかぽかクリームシチュー",3000,"mowmow_stew.png"],
+    ["も～も～ハニートースト",4000,"honey_toast.png"],
+    ["まんぷくハンバーグ",4000,"hamburg.png"]
   ],
+
+  "Dessert": [
+    ["いぬぷりん（いちご味）",3000,"pudding_strawberry.png"],
+    ["いぬぷりん（マンゴー味）",3000,"pudding_mango.png"]
+  ],
+
+  "Joint": [
+    ["ぷにっとわんくーる",3000,"wan_cool.png"],
+    ["ぷにっとも～くーる",3000,"mow_cool.png"]
+  ],
+
   "Rescue": [
-    ["も～も～点滴いちごみるく",3000,"strawberry_milk.png"]
+    ["も～も～点滴いちごみるく",3000,"strawberry_milk.png"],
+    ["わんわんレスキューサンド",3000,"rescue_sand.png"],
+    ["わんわんレスキュードック",3000,"rescue_dog.png"]
+  ],
+
+  "期間限定": [
+    ["しゅわしゅわオレンジソーダ",5000,"orange_soda.png"],
+    ["わんわんキッシュ",5000,"wan_quiche.png"],
+    ["も～も～キッシュ",5000,"mow_quiche.png"]
+  ],
+
+  "Secret": [
+    ["いちご",4000,"secret_strawberry.png"]
   ]
+
 };
 
 let currentTab = "Drink";
@@ -166,6 +195,7 @@ let total = 0;
 let cart = {};
 let historyList = [];
 
+/* タブ */
 function renderTabs() {
   const tabbar = document.getElementById("tabbar");
   tabbar.innerHTML = "";
@@ -185,6 +215,7 @@ function renderTabs() {
   }
 }
 
+/* メニュー */
 function renderMenu() {
   const menu = document.getElementById("menu");
   menu.innerHTML = "";
@@ -209,12 +240,14 @@ function renderMenu() {
   });
 }
 
+/* 加算 */
 function addItem(name, price, qty) {
   total += price * qty;
   cart[name] = (cart[name] || 0) + qty;
   updateUI();
 }
 
+/* 減算 */
 function removeItem(name, price, qty) {
   if (!cart[name]) return;
   cart[name] -= qty;
@@ -226,6 +259,7 @@ function removeItem(name, price, qty) {
   updateUI();
 }
 
+/* 更新 */
 function updateUI() {
   document.getElementById("total").innerText = total;
 
@@ -237,12 +271,14 @@ function updateUI() {
   document.getElementById("cart").innerHTML = text || "注文なし";
 }
 
+/* リセット */
 function resetCart() {
   total = 0;
   cart = {};
   updateUI();
 }
 
+/* 確定 */
 function confirmOrder() {
   if (Object.keys(cart).length === 0) return;
 
@@ -258,6 +294,7 @@ function confirmOrder() {
   resetCart();
 }
 
+/* 初期 */
 renderTabs();
 renderMenu();
 </script>
