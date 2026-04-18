@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
-<title>わんも～Cafe | wanmowcafe</title>
-
-<style>
-
-/* フォント */
+/* フォント（そのまま維持） */
 @font-face {
   font-family: 'Yasashisa';
   src: url('YasashisaGothicBold-V2.otf') format('opentype');
@@ -15,11 +7,11 @@
 body{
   margin:0;
   font-family:'Yasashisa', sans-serif;
-  background:linear-gradient(180deg,#ffeef3,#fff7fb);
+  background:linear-gradient(180deg,#fff0f6,#fff7fb);
   padding:10px;
 }
 
-/* 全体 */
+/* 中央 */
 .container{
   display:flex;
   justify-content:center;
@@ -28,21 +20,22 @@ body{
   gap:20px;
 }
 
-.main{ width:70%; }
+.main{ width:75%; }
 
+/* 右 */
 .sidebar{
-  width:30%;
-  background:#fff0f5;
+  width:25%;
+  background:linear-gradient(180deg,#ffe4ef,#fff0f6);
   border-radius:25px;
   padding:20px;
-  box-shadow:0 10px 30px rgba(255,150,180,0.3);
+  box-shadow:0 15px 40px rgba(255,150,180,0.25);
 }
 
 /* ロゴ */
 .logo{
-  width:320px;
-  display:block;
+  width:300px;
   margin:10px auto;
+  display:block;
 }
 
 /* タブ */
@@ -56,26 +49,31 @@ body{
 
 .tab{
   padding:10px 18px;
+  border-radius:999px;
   background:#fff;
-  border-radius:20px;
   cursor:pointer;
   box-shadow:0 5px 15px rgba(0,0,0,0.1);
+  transition:0.2s;
+}
+
+.tab:hover{
+  transform:translateY(-2px);
 }
 
 .tab.active{
-  background:linear-gradient(45deg,#ffb6d5,#ff6fa5);
+  background:linear-gradient(45deg,#ff9ecb,#ff6fa5);
   color:white;
 }
 
 .tab-badge{
   position:absolute;
-  top:-6px;
-  right:-6px;
+  top:-5px;
+  right:-5px;
   background:#ff6fa5;
   color:white;
-  font-size:12px;
-  padding:4px 7px;
   border-radius:999px;
+  padding:4px 6px;
+  font-size:11px;
 }
 
 /* メニュー */
@@ -89,12 +87,16 @@ body{
 /* カード */
 .item{
   width:200px;
-  background:white;
+  background:#fff;
   border-radius:25px;
   padding:15px;
-  box-shadow:0 10px 25px rgba(255,150,180,0.25);
   text-align:center;
-  position:relative;
+  box-shadow:0 15px 30px rgba(255,150,180,0.2);
+  transition:0.2s;
+}
+
+.item:hover{
+  transform:translateY(-5px);
 }
 
 .item img{
@@ -110,7 +112,7 @@ body{
   background:#ff6fa5;
   color:white;
   border-radius:999px;
-  padding:5px 10px;
+  padding:4px 8px;
 }
 
 /* ボタン */
@@ -123,12 +125,14 @@ body{
 }
 
 .qty-btn{
-  padding:8px 10px;
   border:none;
   border-radius:999px;
+  padding:8px 10px;
   font-size:13px;
-  background:#ffe4ec;
   cursor:pointer;
+  background:#ffe4ec;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+  transition:0.1s;
 }
 
 .qty-btn:active{
@@ -146,23 +150,24 @@ body{
 
 /* カート */
 .cart-title{
-  font-size:22px;
   text-align:center;
+  font-size:22px;
 }
 
 .cart-item{
+  display:flex;
+  justify-content:space-between;
   background:white;
   border-radius:15px;
   padding:10px;
   margin-bottom:8px;
-  display:flex;
-  justify-content:space-between;
+  box-shadow:0 5px 10px rgba(0,0,0,0.1);
 }
 
 .cart-remove{
-  background:#ff9ecb;
   border:none;
   border-radius:50%;
+  background:#ff9ecb;
   width:24px;
   height:24px;
 }
@@ -171,8 +176,8 @@ body{
 .total-box{
   margin-top:15px;
   padding:12px;
-  background:linear-gradient(45deg,#ffd6ec,#ffeaf5);
   border-radius:20px;
+  background:linear-gradient(45deg,#ffe4ef,#fff0f6);
   text-align:center;
   font-size:20px;
 }
@@ -200,6 +205,7 @@ body{
 @media (max-width:800px){
   .container{ flex-direction:column; }
   .main,.sidebar{ width:100%; }
+
   .item{ width:90%; }
 
   .qty-btn{
@@ -207,156 +213,3 @@ body{
     font-size:16px;
   }
 }
-
-</style>
-</head>
-
-<body>
-
-<div class="container">
-
-<div class="main">
-<img src="logo.png" class="logo">
-<div class="tabbar" id="tabbar"></div>
-<div id="menu" class="menu"></div>
-</div>
-
-<div class="sidebar">
-<div class="cart-title">注文内容</div>
-<div id="cart">注文なし</div>
-
-<div class="total-box">
-合計: ¥<span id="total">0</span>
-</div>
-
-<button class="confirm" onclick="confirmOrder()">確定する</button>
-<button class="reset" onclick="resetCart()">リセット</button>
-
-<div class="history-box">
-<h3>履歴</h3>
-<div id="history">なし</div>
-</div>
-</div>
-
-</div>
-
-<script>
-
-/* メニュー */
-const menuData = {
-Drink:[
-["も～も～ミルクラテ",3000,"milk_latte.png"],
-["わんプレッソラテ",3000,"wanpresso.png"]
-],
-Food:[
-["わんも～弁当",4000,"wanmow_bento.png"],
-["わんも～プレート",6000,"wanmow_plate.png"]
-]
-};
-
-let currentTab="Drink";
-let cart={};
-
-function getTotal(){
-let total=0;
-Object.values(menuData).forEach(list=>{
-list.forEach(item=>{
-if(cart[item[0]]) total+=item[1]*cart[item[0]];
-});
-});
-return total;
-}
-
-function renderAll(){
-renderTabs();
-renderMenu();
-updateUI();
-}
-
-function renderTabs(){
-const tabbar=document.getElementById("tabbar");
-tabbar.innerHTML="";
-
-Object.keys(menuData).forEach(key=>{
-const tab=document.createElement("div");
-tab.className="tab"+(key===currentTab?" active":"");
-tab.innerText=key;
-tab.onclick=()=>{currentTab=key;renderAll();};
-tabbar.appendChild(tab);
-});
-}
-
-function renderMenu(){
-const menu=document.getElementById("menu");
-menu.innerHTML="";
-
-menuData[currentTab].forEach(item=>{
-const count=cart[item[0]]||0;
-
-const div=document.createElement("div");
-div.className="item";
-
-div.innerHTML=`
-${count>0?`<div class="count-badge">×${count}</div>`:""}
-<img src="${item[2]}">
-<p>${item[0]}</p>
-<p>¥${item[1]}</p>
-
-<div>
-<button class="qty-btn minus10" onclick="change('${item[0]}',-10)">-10</button>
-<button class="qty-btn minus1" onclick="change('${item[0]}',-1)">-1</button>
-<button class="qty-btn zero" onclick="clearItem('${item[0]}')">0</button>
-<button class="qty-btn add1" onclick="change('${item[0]}',1)">+1</button>
-<button class="qty-btn add10" onclick="change('${item[0]}',10)">+10</button>
-</div>
-`;
-
-menu.appendChild(div);
-});
-}
-
-function change(name,delta){
-cart[name]=(cart[name]||0)+delta;
-if(cart[name]<=0) delete cart[name];
-renderAll();
-}
-
-function clearItem(name){
-delete cart[name];
-renderAll();
-}
-
-function removeFromCart(name){
-delete cart[name];
-renderAll();
-}
-
-function updateUI(){
-document.getElementById("total").innerText=getTotal();
-
-let html="";
-for(let item in cart){
-html+=`
-<div class="cart-item">
-${item} ×${cart[item]}
-<button class="cart-remove" onclick="removeFromCart('${item}')">×</button>
-</div>`;
-}
-document.getElementById("cart").innerHTML=html||"注文なし";
-}
-
-function resetCart(){
-cart={};
-renderAll();
-}
-
-function confirmOrder(){
-resetCart();
-}
-
-renderAll();
-
-</script>
-
-</body>
-</html>
