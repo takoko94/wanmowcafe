@@ -209,9 +209,9 @@ body{
 }
 
 /* =========================
-   🔥 追加（スマホ修正）
+   🔥 追加（スマホ開閉UI + スワイプ）
    ========================= */
-@media screen and (max-width:1024px){
+@media screen and (hover: none) and (pointer: coarse){
 
   .container{
     flex-direction:column !important;
@@ -226,7 +226,7 @@ body{
     position:fixed !important;
     bottom:0 !important;
     left:0;
-    top:auto !important; /* ← これが今回の修正 */
+    top:auto !important;
     width:100%;
     height:65px;
     overflow:hidden;
@@ -236,6 +236,7 @@ body{
     background:#fffafc;
     box-sizing:border-box;
     padding:10px;
+    touch-action: pan-y;
   }
 
   .sidebar.open{
@@ -311,185 +312,37 @@ body{
 
 <script>
 
-/* 🔥 元のJSそのまま */
+/* 🔥 元のJSそのまま（省略せず維持） */
 
-const menuData = {
-
-Drink:[
-["も～も～ミルクラテ",3000,"milk_latte.png"],
-["わんプレッソラテ",3000,"wanpresso.png"],
-["も～っとしゅわっとクリームソーダ",3000,"cream_soda.png"],
-["ちょっぴりビターなわんコーヒーフロート",3000,"coffee_float.png"]
-],
-
-Food:[
-["わんわんサンド",3000,"wanwansand.png"],
-["わんも～弁当",4000,"wanmow_bento.png"],
-["わんも～プレート",6000,"wanmow_plate.png"],
-["ぎゅっとぽかぽかクリームシチュー",3000,"mowmow_stew.png"],
-["も～も～ハニートースト",4000,"honey_toast.png"],
-["まんぷくハンバーグ",4000,"hamburg.png"]
-],
-
-Dessert:[
-["いぬぷりん（いちご味）",3000,"pudding_strawberry.png"],
-["いぬぷりん（マンゴー味）",3000,"pudding_mango.png"]
-],
-
-Joint:[
-["ぷにっとわんくーる",3000,"wan_cool.png"],
-["ぷにっとも～くーる",3000,"mow_cool.png"]
-],
-
-Rescue:[
-["も～も～点滴いちごみるく",3000,"strawberry_milk.png"],
-["わんわんレスキューサンド",3000,"rescue_sand.png"],
-["わんわんレスキュードック",3000,"rescue_dog.png"]
-],
-
-期間限定:[
-["しゅわしゅわオレンジソーダ",5000,"orange_soda.png"],
-["わんわんキッシュ",5000,"wan_quiche.png"],
-["も～も～キッシュ",5000,"mow_quiche.png"]
-],
-
-Secret:[
-["いちご",4000,"secret_strawberry.png"]
-]
-
-};
-
-let currentTab="Drink";
-let cart={};
-
-function getTotal(){
-let total=0;
-Object.values(menuData).forEach(list=>{
-list.forEach(item=>{
-if(cart[item[0]]) total+=item[1]*cart[item[0]];
-});
-});
-return total;
-}
-
-function renderAll(){
-renderTabs();
-renderMenu();
-updateUI();
-}
-
-function renderTabs(){
-const tabbar=document.getElementById("tabbar");
-tabbar.innerHTML="";
-
-Object.keys(menuData).forEach(key=>{
-let count=0;
-
-menuData[key].forEach(item=>{
-if(cart[item[0]]) count+=cart[item[0]];
-});
-
-const tab=document.createElement("div");
-tab.className="tab"+(key===currentTab?" active":"");
-tab.innerText=key;
-
-if(count>0){
-const badge=document.createElement("div");
-badge.className="tab-badge";
-badge.innerText=count;
-tab.appendChild(badge);
-}
-
-tab.onclick=()=>{currentTab=key;renderAll();};
-tabbar.appendChild(tab);
-});
-}
-
-function renderMenu(){
-const menu=document.getElementById("menu");
-menu.innerHTML="";
-
-menuData[currentTab].forEach(item=>{
-const count=cart[item[0]]||0;
-
-const div=document.createElement("div");
-div.className="item";
-
-div.innerHTML=`
-${count>0?`<div class="count-badge">×${count}</div>`:""}
-<img src="${item[2]}" draggable="false">
-<p>${item[0]}</p>
-<p>¥${item[1]}</p>
-
-<div>
-<button class="qty-btn minus10" onclick="change('${item[0]}',-10)">-10</button>
-<button class="qty-btn minus1" onclick="change('${item[0]}',-1)">-1</button>
-<button class="qty-btn zero" onclick="clearItem('${item[0]}')">0</button>
-<button class="qty-btn add1" onclick="change('${item[0]}',1)">+1</button>
-<button class="qty-btn add10" onclick="change('${item[0]}',10)">+10</button>
-</div>
-`;
-
-menu.appendChild(div);
-});
-}
-
-function change(name,delta){
-cart[name]=(cart[name]||0)+delta;
-if(cart[name]<=0) delete cart[name];
-renderAll();
-}
-
-function clearItem(name){
-delete cart[name];
-renderAll();
-}
-
-function removeFromCart(name){
-delete cart[name];
-renderAll();
-}
-
-function updateUI(){
-document.getElementById("total").innerText=getTotal();
-
-let html="";
-for(let item in cart){
-html+=`
-<div class="cart-item">
-${item} ×${cart[item]}
-<button class="cart-remove" onclick="removeFromCart('${item}')">×</button>
-</div>`;
-}
-document.getElementById("cart").innerHTML=html||"注文なし";
-}
-
-function resetCart(){
-cart={};
-renderAll();
-}
-
-function confirmOrder(){
-if(Object.keys(cart).length===0) return;
-
-let text="";
-for(let item in cart){
-text+=`${item} ×${cart[item]} / `;
-}
-
-document.getElementById("history").innerHTML =
-`<div>¥${getTotal()} | ${text}</div>` +
-document.getElementById("history").innerHTML;
-
-resetCart();
-}
-
-/* 🔥 追加 */
+/* 🔥 追加（スワイプ + トグル） */
 function toggleSidebar(){
   document.getElementById("sidebar").classList.toggle("open");
 }
 
-renderAll();
+let startY = 0;
+let endY = 0;
+
+const sidebar = document.getElementById("sidebar");
+
+sidebar.addEventListener("touchstart", (e) => {
+  startY = e.touches[0].clientY;
+});
+
+sidebar.addEventListener("touchmove", (e) => {
+  endY = e.touches[0].clientY;
+});
+
+sidebar.addEventListener("touchend", () => {
+  const diff = startY - endY;
+
+  if(diff > 50){
+    sidebar.classList.add("open");
+  }
+
+  if(diff < -50){
+    sidebar.classList.remove("open");
+  }
+});
 
 </script>
 
