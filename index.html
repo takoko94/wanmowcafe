@@ -23,7 +23,7 @@ body{
   letter-spacing:0.5px;
 }
 
-/* レイアウト */
+/* 中央寄せ */
 .container{
   display:flex;
   justify-content:center;
@@ -108,7 +108,6 @@ body{
 .item img{
   width:100%;
   border-radius:10px;
-  pointer-events:none;
 }
 
 .count-badge{
@@ -119,7 +118,6 @@ body{
   color:white;
   border-radius:999px;
   padding:4px 8px;
-  font-size:12px;
 }
 
 /* ボタン */
@@ -131,7 +129,7 @@ body{
 }
 
 .qty-btn{
-  padding:5px 8px;
+  padding:6px 8px;
   border:none;
   border-radius:999px;
   font-size:12px;
@@ -212,47 +210,48 @@ body{
 /* =========================
    🔥 スマホ完全修正
    ========================= */
-@media (max-width:800px){
+@media screen and (max-width:1024px){
 
   .container{
-    flex-direction:column;
+    flex-direction:column !important;
   }
 
   .main{
-    width:100%;
-    padding-bottom:200px;
+    width:100% !important;
+    padding-bottom:220px !important;
   }
 
-  /* 👇 注文バー */
+  /* 👇 下固定バー */
   .sidebar{
-    position:fixed;
-    bottom:0;
-    left:0;
-    width:100%;
-    height:180px;
-    border-left:none;
+    position:fixed !important;
+    bottom:0 !important;
+    left:0 !important;
+    width:100% !important;
+    height:200px !important;
+    border-left:none !important;
     border-radius:20px 20px 0 0;
-    z-index:9999;
+    background:#fffafc !important;
+    z-index:9999 !important;
   }
 
   /* 2列 */
   .item{
-    width:48%;
+    width:48% !important;
   }
 
-  /* 👇 ボタン巨大化 */
+  /* 👇 ボタン確実にデカい */
   .qty-btn{
-    padding:18px;
-    font-size:16px;
-    min-width:50px;
+    padding:18px !important;
+    font-size:16px !important;
+    min-width:50px !important;
   }
 
   .item div{
-    gap:8px;
+    gap:8px !important;
   }
 
   .tabbar{
-    justify-content:flex-start;
+    justify-content:flex-start !important;
   }
 
 }
@@ -291,15 +290,17 @@ body{
 
 <script>
 
-/* JSは完全に元のまま */
+/* 🔥 元のJSそのまま */
 
 const menuData = {
+
 Drink:[
 ["も～も～ミルクラテ",3000,"milk_latte.png"],
 ["わんプレッソラテ",3000,"wanpresso.png"],
 ["も～っとしゅわっとクリームソーダ",3000,"cream_soda.png"],
 ["ちょっぴりビターなわんコーヒーフロート",3000,"coffee_float.png"]
 ],
+
 Food:[
 ["わんわんサンド",3000,"wanwansand.png"],
 ["わんも～弁当",4000,"wanmow_bento.png"],
@@ -308,27 +309,33 @@ Food:[
 ["も～も～ハニートースト",4000,"honey_toast.png"],
 ["まんぷくハンバーグ",4000,"hamburg.png"]
 ],
+
 Dessert:[
 ["いぬぷりん（いちご味）",3000,"pudding_strawberry.png"],
 ["いぬぷりん（マンゴー味）",3000,"pudding_mango.png"]
 ],
+
 Joint:[
 ["ぷにっとわんくーる",3000,"wan_cool.png"],
 ["ぷにっとも～くーる",3000,"mow_cool.png"]
 ],
+
 Rescue:[
 ["も～も～点滴いちごみるく",3000,"strawberry_milk.png"],
 ["わんわんレスキューサンド",3000,"rescue_sand.png"],
 ["わんわんレスキュードック",3000,"rescue_dog.png"]
 ],
+
 期間限定:[
 ["しゅわしゅわオレンジソーダ",5000,"orange_soda.png"],
 ["わんわんキッシュ",5000,"wan_quiche.png"],
 ["も～も～キッシュ",5000,"mow_quiche.png"]
 ],
+
 Secret:[
 ["いちご",4000,"secret_strawberry.png"]
 ]
+
 };
 
 let currentTab="Drink";
@@ -356,9 +363,11 @@ tabbar.innerHTML="";
 
 Object.keys(menuData).forEach(key=>{
 let count=0;
+
 menuData[key].forEach(item=>{
 if(cart[item[0]]) count+=cart[item[0]];
 });
+
 const tab=document.createElement("div");
 tab.className="tab"+(key===currentTab?" active":"");
 tab.innerText=key;
