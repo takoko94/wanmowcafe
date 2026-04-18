@@ -80,7 +80,6 @@ body{
   color:white;
 }
 
-/* バッジ */
 .tab-badge{
   position:absolute;
   top:-5px;
@@ -153,21 +152,14 @@ body{
 .qty-btn{
   width:42px;
   height:36px;
-  padding:0;
   display:flex;
   align-items:center;
   justify-content:center;
-
   border:none;
   border-radius:999px;
   cursor:pointer;
-
   box-shadow:0 4px 0 rgba(0,0,0,0.15);
   transition:all 0.1s ease;
-}
-
-.qty-btn:hover{
-  transform:translateY(-2px);
 }
 
 .qty-btn:active{
@@ -175,33 +167,17 @@ body{
   box-shadow:0 1px 0 rgba(0,0,0,0.2);
 }
 
-/* 色 */
 .minus10{ background:#f0d6d6; }
 .minus1{ background:#f5e1e1; }
 .zero{ background:#eee; }
 .add1{ background:#e7d8cf; }
-.add10{
-  background:#cfa18d;
-}
+.add10{ background:#cfa18d; }
 
-/* 🔥 数字 */
-.qty-num{
-  font-size:14px;
-  font-weight:bold;
-  line-height:1;
-  color:#5c4b42;
-}
-
-/* +10だけ白 */
-.add10 .qty-num{
-  color:white;
-}
+.qty-num{ font-size:14px; font-weight:bold; color:#5c4b42; }
+.add10 .qty-num{ color:white; }
 
 /* ===== カート ===== */
-.cart-title{
-  font-size:20px;
-  font-weight:bold;
-}
+.cart-title{ font-size:20px; font-weight:bold; }
 
 .cart-item{
   display:flex;
@@ -243,11 +219,7 @@ body{
   font-weight:bold;
 }
 
-.confirm{
-  background:#b88976;
-  color:white;
-}
-
+.confirm{ background:#b88976; color:white; }
 .reset{ background:#e6d5cc; }
 
 /* ===== 履歴 ===== */
@@ -261,62 +233,42 @@ body{
 
 /* ===== スマホ ===== */
 @media (max-width:800px){
+.container{ flex-direction:column; }
+.main,.sidebar{ width:100%; }
 
-  .container{ flex-direction:column; }
-  .main,.sidebar{ width:100%; }
+.sidebar{
+position:fixed;
+bottom:-100%;
+left:0;
+width:100vw;
+height:70%;
+border-radius:20px 20px 0 0;
+transition:0.3s;
+z-index:100;
+}
+.sidebar.active{ bottom:0; }
 
-  .sidebar{
-    position:fixed;
-    bottom:-100%;
-    left:0;
-    width:100vw;
-    height:70%;
-    top:auto;
-    border-radius:20px 20px 0 0;
-    transition:0.3s;
-    z-index:100;
-  }
+.overlay{
+position:fixed;
+top:0;left:0;
+width:100%;height:100%;
+background:rgba(0,0,0,0.3);
+display:none;
+z-index:90;
+}
+.overlay.active{ display:block; }
 
-  .sidebar.active{
-    bottom:0;
-  }
-
-  .overlay{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,0.3);
-    display:none;
-    z-index:90;
-  }
-
-  .overlay.active{
-    display:block;
-  }
-
-  .qty-btn{
-    width:44px;
-    height:38px;
-  }
-
-  .qty-num{
-    font-size:15px;
-  }
-
-  .cart-toggle{
-    position:fixed;
-    bottom:20px;
-    right:20px;
-    background:#cfa18d;
-    color:white;
-    padding:14px 16px;
-    border-radius:999px;
-    z-index:110;
-    font-weight:bold;
-  }
-
+.cart-toggle{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#cfa18d;
+color:white;
+padding:14px 16px;
+border-radius:999px;
+z-index:110;
+font-weight:bold;
+}
 }
 
 </style>
@@ -325,12 +277,13 @@ body{
 <body>
 
 <!-- ★追加 -->
-<button onclick="generateMenuImage()" style="position:fixed;top:10px;right:10px;z-index:9999;padding:10px 20px;border:none;border-radius:999px;background:#cfa18d;color:white;font-weight:bold;">📋 メニュー表作成</button>
+<button onclick="generateMenuImage()" style="position:fixed;top:10px;right:10px;z-index:9999;padding:10px 20px;border:none;border-radius:999px;background:#cfa18d;color:white;font-weight:bold;">
+📋 メニュー表作成
+</button>
 
 <div class="overlay" onclick="toggleCart()"></div>
 
 <div class="container">
-
 <div class="main">
 <img src="logo.png" class="logo">
 <div class="tabbar" id="tabbar"></div>
@@ -353,7 +306,6 @@ body{
 <div id="history">なし</div>
 </div>
 </div>
-
 </div>
 
 <div class="cart-toggle" onclick="toggleCart()">
@@ -361,13 +313,11 @@ body{
 </div>
 
 <!-- ★追加 -->
-<div id="menuBoard" style="width:1280px;height:720px;position:fixed;left:-9999px;top:0;background:#fffaf5;padding:30px;">
-<div id="menuBoardGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;"></div>
-</div>
+<div id="menuBoard" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:1280px;height:720px;background:#fffaf5;padding:40px;z-index:9999;border-radius:20px;"></div>
 
 <script>
 
-/* ===== 元コード完全そのまま ===== */
+/* ===== 完全そのまま ===== */
 
 const menuData = {
 Drink:[
@@ -434,25 +384,20 @@ updateUI();
 function renderTabs(){
 const tabbar=document.getElementById("tabbar");
 tabbar.innerHTML="";
-
 Object.keys(menuData).forEach(key=>{
 let count=0;
-
 menuData[key].forEach(item=>{
 if(cart[item[0]]) count+=cart[item[0]];
 });
-
 const tab=document.createElement("div");
 tab.className="tab"+(key===currentTab?" active":"");
 tab.innerText=key;
-
 if(count>0){
 const badge=document.createElement("div");
 badge.className="tab-badge";
 badge.innerText=count;
 tab.appendChild(badge);
 }
-
 tab.onclick=()=>{currentTab=key;renderAll();};
 tabbar.appendChild(tab);
 });
@@ -461,10 +406,8 @@ tabbar.appendChild(tab);
 function renderMenu(){
 const menu=document.getElementById("menu");
 menu.innerHTML="";
-
 menuData[currentTab].forEach(item=>{
 const count=cart[item[0]]||0;
-
 const div=document.createElement("div");
 div.className="item";
 
@@ -473,45 +416,21 @@ ${count>0?`<div class="count-badge">×${count}</div>`:""}
 <img src="${item[2]}">
 <p>${item[0]}</p>
 <p>${item[1].toLocaleString()}円</p>
-
 <div>
-<button class="qty-btn minus10" onclick="change('${item[0]}',-10)">
-<span class="qty-num">-10</span>
-</button>
-<button class="qty-btn minus1" onclick="change('${item[0]}',-1)">
-<span class="qty-num">-1</span>
-</button>
-<button class="qty-btn zero" onclick="clearItem('${item[0]}')">
-<span class="qty-num">0</span>
-</button>
-<button class="qty-btn add1" onclick="change('${item[0]}',1)">
-<span class="qty-num">+1</span>
-</button>
-<button class="qty-btn add10" onclick="change('${item[0]}',10)">
-<span class="qty-num">+10</span>
-</button>
+<button class="qty-btn minus10" onclick="change('${item[0]}',-10)"><span class="qty-num">-10</span></button>
+<button class="qty-btn minus1" onclick="change('${item[0]}',-1)"><span class="qty-num">-1</span></button>
+<button class="qty-btn zero" onclick="clearItem('${item[0]}')"><span class="qty-num">0</span></button>
+<button class="qty-btn add1" onclick="change('${item[0]}',1)"><span class="qty-num">+1</span></button>
+<button class="qty-btn add10" onclick="change('${item[0]}',10)"><span class="qty-num">+10</span></button>
 </div>
 `;
-
 menu.appendChild(div);
 });
 }
 
-function change(name,delta){
-cart[name]=(cart[name]||0)+delta;
-if(cart[name]<=0) delete cart[name];
-renderAll();
-}
-
-function clearItem(name){
-delete cart[name];
-renderAll();
-}
-
-function removeFromCart(name){
-delete cart[name];
-renderAll();
-}
+function change(name,delta){ cart[name]=(cart[name]||0)+delta; if(cart[name]<=0) delete cart[name]; renderAll(); }
+function clearItem(name){ delete cart[name]; renderAll(); }
+function removeFromCart(name){ delete cart[name]; renderAll(); }
 
 function updateUI(){
 document.getElementById("total").innerText=getTotal().toLocaleString();
@@ -519,52 +438,67 @@ document.getElementById("floatingTotal").innerText=getTotal().toLocaleString();
 
 let html="";
 for(let item in cart){
-html+=`
-<div class="cart-item">
-${item} ×${cart[item]}
-<button class="cart-remove" onclick="removeFromCart('${item}')">×</button>
-</div>`;
+html+=`<div class="cart-item">${item} ×${cart[item]}<button class="cart-remove" onclick="removeFromCart('${item}')">×</button></div>`;
 }
 document.getElementById("cart").innerHTML=html||"注文なし";
 }
 
-function resetCart(){
-cart={};
-renderAll();
-}
+function resetCart(){ cart={}; renderAll(); }
 
 function confirmOrder(){
 if(Object.keys(cart).length===0) return;
-
 let text="";
-for(let item in cart){
-text+=`${item} ×${cart[item]} / `;
-}
-
+for(let item in cart){ text+=`${item} ×${cart[item]} / `; }
 document.getElementById("history").innerHTML =
 `<div>${getTotal().toLocaleString()}円 | ${text}</div>` +
 document.getElementById("history").innerHTML;
-
 resetCart();
 }
 
-/* ★追加 */
+/* ★追加（ここだけ） */
 function generateMenuImage(){
-const grid=document.getElementById("menuBoardGrid");
-grid.innerHTML="";
-Object.values(menuData).forEach(list=>{
+const board=document.getElementById("menuBoard");
+board.innerHTML="";
+const grid=document.createElement("div");
+grid.style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px;";
+board.innerHTML=`<div style="text-align:center;font-size:40px;font-weight:bold;margin-bottom:20px;color:#b88976;">わんも〜CAFE MENU</div>`;
+board.appendChild(grid);
+
+Object.entries(menuData).forEach(([key,list])=>{
+if(key==="Secret") return;
+
+const cat=document.createElement("div");
+cat.innerText=key;
+cat.style="grid-column:1/-1;font-size:22px;font-weight:bold;color:#cfa18d;margin-top:10px;";
+grid.appendChild(cat);
+
 list.forEach(item=>{
 const div=document.createElement("div");
-div.innerHTML=`<img src="${item[2]}" style="width:100%"><div>${item[0]}</div><div>${item[1].toLocaleString()}円</div>`;
+div.style="background:white;border-radius:20px;padding:10px;text-align:center;border:2px solid #f1e3da;";
+div.innerHTML=`<img src="${item[2]}" style="width:100%;border-radius:12px;"><div>${item[0]}</div><div style="color:#b88976;font-weight:bold;">${item[1].toLocaleString()}円</div>`;
 grid.appendChild(div);
 });
 });
+
+board.style.display="block";
+
+const btn=document.createElement("div");
+btn.style="text-align:center;margin-top:15px;";
+btn.innerHTML=`<button onclick="saveMenu()">保存</button> <button onclick="closeMenu()">閉じる</button>`;
+board.appendChild(btn);
+}
+
+function saveMenu(){
 html2canvas(document.getElementById("menuBoard")).then(canvas=>{
 const link=document.createElement("a");
 link.download="menu.png";
 link.href=canvas.toDataURL();
 link.click();
 });
+}
+
+function closeMenu(){
+document.getElementById("menuBoard").style.display="none";
 }
 
 renderAll();
