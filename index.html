@@ -12,51 +12,61 @@ body {
   text-align: center;
 }
 
+/* ロゴ */
 .logo {
-  width: 380px;
-  margin: 20px auto;
-  display: block;
+  width: 320px;
+  margin: 15px auto;
 }
 
-.brand {
-  color: #999;
-  font-size: 14px;
+/* タブ */
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: #ffe4ea;
+  padding: 10px;
 }
 
-.category {
-  margin-top: 40px;
+.tab {
+  padding: 10px 15px;
+  margin: 0 5px;
+  background: white;
+  border-radius: 10px;
+  cursor: pointer;
+  white-space: nowrap;
 }
 
-h2 {
-  color: #8b5e3c;
+.tab.active {
+  background: #ff69b4;
+  color: white;
 }
 
+/* メニュー */
 .menu {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 20px;
+  gap: 15px;
+  padding: 10px;
 }
 
 .item {
-  width: 200px;
+  width: 180px;
   background: white;
-  border-radius: 20px;
+  border-radius: 15px;
   padding: 10px;
   border: 2px solid #ffd6dc;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
 .item img {
   width: 100%;
-  border-radius: 15px;
+  border-radius: 10px;
 }
 
 button {
-  margin: 3px;
-  padding: 6px 10px;
+  margin: 2px;
+  padding: 5px 8px;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   cursor: pointer;
 }
 
@@ -65,159 +75,111 @@ button {
 .minus1 { background: #ddd; }
 .minus10 { background: #aaa; color: white; }
 
+/* カート */
 .cart {
-  margin: 20px auto;
-  width: 80%;
-  max-width: 400px;
   background: white;
-  padding: 15px;
-  border-radius: 15px;
-  border: 2px solid #ffe0e5;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 10px;
 }
 
 .total {
-  font-size: 26px;
-  font-weight: bold;
+  font-size: 20px;
 }
 
-.confirm {
-  background: #ff69b4;
-  color: white;
-  margin-top: 10px;
-}
+.confirm { background: hotpink; color: white; }
+.reset { background: #ff9999; color: white; }
 
-.reset {
-  background: #ff9999;
-  color: white;
-}
-
-.history {
-  margin: 30px auto;
-  width: 80%;
-  max-width: 500px;
-  background: #fff;
-  padding: 15px;
-  border-radius: 15px;
-  border: 2px solid #ffd6dc;
-}
 </style>
 </head>
 
 <body>
 
 <img src="logo.png" class="logo">
-<div class="brand">wanmowcafe</div>
 
-<div id="app"></div>
+<!-- タブ -->
+<div class="tabs" id="tabs"></div>
 
+<!-- メニュー -->
+<div id="menu"></div>
+
+<!-- カート -->
 <div class="cart" id="cart">注文なし</div>
-
-<div class="total">
-合計: ¥<span id="total">0</span>
-</div>
+<div class="total">合計: ¥<span id="total">0</span></div>
 
 <button class="confirm" onclick="confirmOrder()">注文確定</button>
-<br>
 <button class="reset" onclick="resetCart()">リセット</button>
-
-<div class="history">
-  <h3>注文履歴</h3>
-  <div id="history">まだ注文なし</div>
-</div>
 
 <script>
 const menuData = {
-
   "Drink": [
     ["も～も～ミルクラテ",3000,"milk_latte.png"],
-    ["わんプレッソラテ",3000,"wanpresso.png"],
-    ["も～っとしゅわっとクリームソーダ",3000,"cream_soda.png"],
-    ["ちょっぴりビターなわんコーヒーフロート",3000,"coffee_float.png"]
+    ["わんプレッソラテ",3000,"wanpresso.png"]
   ],
-
   "Food": [
-    ["わんわんサンド",3000,"wanwansand.png"],
     ["わんも～弁当",4000,"wanmow_bento.png"],
-    ["わんも～プレート",6000,"wanmow_plate.png"],
-    ["ぎゅっとぽかぽかクリームシチュー",3000,"mowmow_stew.png"],
-    ["も～も～ハニートースト",4000,"honey_toast.png"],
-    ["まんぷくハンバーグ",4000,"hamburg.png"]
+    ["わんも～プレート",6000,"wanmow_plate.png"]
   ],
-
   "Dessert": [
-    ["いぬぷりん（いちご味）",3000,"pudding_strawberry.png"],
-    ["いぬぷりん（マンゴー味）",3000,"pudding_mango.png"]
-  ],
-
-  "Joint": [
-    ["ぷにっとわんくーる",3000,"wan_cool.png"],
-    ["ぷにっとも～くーる",3000,"mow_cool.png"]
-  ],
-
-  "Rescue": [
-    ["も～も～点滴いちごみるく",3000,"strawberry_milk.png"],
-    ["わんわんレスキューサンド",3000,"rescue_sand.png"],
-    ["わんわんレスキュードック",3000,"rescue_dog.png"]
-  ],
-
-  "期間限定": [
-    ["しゅわしゅわオレンジソーダ",5000,"orange_soda.png"],
-    ["わんわんキッシュ",5000,"wan_quiche.png"],
-    ["も～も～キッシュ",5000,"mow_quiche.png"]
-  ],
-
-  "Secret": [
-    ["いちご",4000,"secret_strawberry.png"]
+    ["いぬぷりん",3000,"pudding_strawberry.png"]
   ]
 };
 
+let currentTab = "Drink";
 let total = 0;
 let cart = {};
-let historyList = [];
+
+function renderTabs() {
+  const tabsDiv = document.getElementById("tabs");
+  tabsDiv.innerHTML = "";
+
+  for (let key in menuData) {
+    const tab = document.createElement("div");
+    tab.className = "tab" + (key === currentTab ? " active" : "");
+    tab.innerText = key;
+
+    tab.onclick = () => {
+      currentTab = key;
+      renderTabs();
+      renderMenu();
+    };
+
+    tabsDiv.appendChild(tab);
+  }
+}
 
 function renderMenu() {
-  const app = document.getElementById("app");
+  const menu = document.getElementById("menu");
+  menu.innerHTML = "";
+  menu.className = "menu";
 
-  for (let category in menuData) {
-    const section = document.createElement("div");
-    section.className = "category";
-    section.innerHTML = `<h2>${category}</h2>`;
+  menuData[currentTab].forEach(item => {
+    const div = document.createElement("div");
+    div.className = "item";
 
-    const menuDiv = document.createElement("div");
-    menuDiv.className = "menu";
+    div.innerHTML = `
+      <img src="${item[2]}">
+      <p>${item[0]}</p>
+      <p>¥${item[1]}</p>
 
-    menuData[category].forEach(item => {
-      const div = document.createElement("div");
-      div.className = "item";
+      <button class="minus10">-10</button>
+      <button class="minus1">-1</button>
+      <button class="add1">+1</button>
+      <button class="add10">+10</button>
+    `;
 
-      div.innerHTML = `
-        <img src="${item[2]}">
-        <p>${item[0]}</p>
-        <p>¥${item[1]}</p>
+    div.querySelector(".add1").onclick = () => addItem(item[0], item[1], 1);
+    div.querySelector(".add10").onclick = () => addItem(item[0], item[1], 10);
+    div.querySelector(".minus1").onclick = () => removeItem(item[0], item[1], 1);
+    div.querySelector(".minus10").onclick = () => removeItem(item[0], item[1], 10);
 
-        <button class="minus10">−10</button>
-        <button class="minus1">−1</button>
-        <button class="add1">＋1</button>
-        <button class="add10">＋10</button>
-      `;
-
-      div.querySelector(".add1").onclick = () => addItem(item[0], item[1], 1);
-      div.querySelector(".add10").onclick = () => addItem(item[0], item[1], 10);
-      div.querySelector(".minus1").onclick = () => removeItem(item[0], item[1], 1);
-      div.querySelector(".minus10").onclick = () => removeItem(item[0], item[1], 10);
-
-      menuDiv.appendChild(div);
-    });
-
-    section.appendChild(menuDiv);
-    app.appendChild(section);
-  }
+    menu.appendChild(div);
+  });
 }
 
 function addItem(name, price, qty) {
   total += price * qty;
-  if (!cart[name]) cart[name] = 0;
-  cart[name] += qty;
+  cart[name] = (cart[name] || 0) + qty;
   updateUI();
 }
 
@@ -239,7 +201,6 @@ function updateUI() {
   for (let item in cart) {
     text += `${item} ×${cart[item]}<br>`;
   }
-
   document.getElementById("cart").innerHTML = text || "注文なし";
 }
 
@@ -250,34 +211,11 @@ function resetCart() {
 }
 
 function confirmOrder() {
-  if (Object.keys(cart).length === 0) {
-    alert("注文が空です！");
-    return;
-  }
-
-  let orderText = "";
-  for (let item in cart) {
-    orderText += `${item} ×${cart[item]} / `;
-  }
-
-  const record = `🧾 ¥${total} | ${orderText}`;
-  historyList.unshift(record);
-
-  renderHistory();
+  alert("注文確定！");
   resetCart();
 }
 
-function renderHistory() {
-  const historyDiv = document.getElementById("history");
-
-  if (historyList.length === 0) {
-    historyDiv.innerHTML = "まだ注文なし";
-    return;
-  }
-
-  historyDiv.innerHTML = historyList.map(h => `<div>${h}</div>`).join("");
-}
-
+renderTabs();
 renderMenu();
 </script>
 
