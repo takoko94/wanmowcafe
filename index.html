@@ -128,18 +128,15 @@ body{
   font-size:12px;
 }
 
-/* 商品名 */
 .item p:first-of-type{
   min-height:40px;
 }
 
-/* 価格 */
 .item p:nth-of-type(2){
   margin-top:auto;
   font-weight:bold;
 }
 
-/* ===== ボタンエリア ===== */
 .item div{
   display:flex;
   justify-content:center;
@@ -148,7 +145,6 @@ body{
   flex-wrap:nowrap;
 }
 
-/* ===== ボタン ===== */
 .qty-btn{
   width:42px;
   height:36px;
@@ -276,7 +272,7 @@ font-weight:bold;
 
 <body>
 
-<!-- ★追加 -->
+<!-- ★追加：生成ボタン -->
 <button onclick="generateMenuImage()" style="position:fixed;top:10px;right:10px;z-index:9999;padding:10px 20px;border:none;border-radius:999px;background:#cfa18d;color:white;font-weight:bold;">
 📋 メニュー表作成
 </button>
@@ -312,12 +308,12 @@ font-weight:bold;
 🛒 <span id="floatingTotal">0</span>円
 </div>
 
-<!-- ★追加 -->
-<div id="menuBoard" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:1280px;height:720px;background:#fffaf5;padding:40px;z-index:9999;border-radius:20px;"></div>
+<!-- ★追加：プレビュー -->
+<div id="menuBoard" style="display:none;"></div>
 
 <script>
 
-/* ===== 完全そのまま ===== */
+/* ===== 元コード ===== */
 
 const menuData = {
 Drink:[
@@ -455,13 +451,42 @@ document.getElementById("history").innerHTML;
 resetCart();
 }
 
-/* ★追加（ここだけ） */
+/* ===== 追加（可愛い横長メニュー） ===== */
+
 function generateMenuImage(){
+
 const board=document.getElementById("menuBoard");
 board.innerHTML="";
+
+board.style.display="block";
+board.style.position="fixed";
+board.style.left="50%";
+board.style.top="50%";
+board.style.transform="translate(-50%,-50%)";
+board.style.width="1280px";
+board.style.height="720px";
+board.style.background="linear-gradient(135deg,#fff7f9,#fffaf5)";
+board.style.borderRadius="20px";
+board.style.padding="30px";
+board.style.boxSizing="border-box";
+board.style.zIndex="9999";
+
+// ✖
+const close=document.createElement("div");
+close.innerText="✕";
+close.style="position:absolute;top:15px;right:20px;font-size:22px;cursor:pointer;";
+close.onclick=closeMenu;
+board.appendChild(close);
+
+// タイトル
+const title=document.createElement("div");
+title.innerText="わんも〜CAFE MENU";
+title.style="text-align:center;font-size:32px;font-weight:bold;color:#b88976;margin-bottom:10px;";
+board.appendChild(title);
+
+// グリッド
 const grid=document.createElement("div");
-grid.style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px;";
-board.innerHTML=`<div style="text-align:center;font-size:40px;font-weight:bold;margin-bottom:20px;color:#b88976;">わんも〜CAFE MENU</div>`;
+grid.style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;height:calc(100% - 100px);overflow:hidden;";
 board.appendChild(grid);
 
 Object.entries(menuData).forEach(([key,list])=>{
@@ -469,22 +494,25 @@ if(key==="Secret") return;
 
 const cat=document.createElement("div");
 cat.innerText=key;
-cat.style="grid-column:1/-1;font-size:22px;font-weight:bold;color:#cfa18d;margin-top:10px;";
+cat.style="grid-column:1/-1;font-size:14px;font-weight:bold;color:#cfa18d;";
 grid.appendChild(cat);
 
 list.forEach(item=>{
-const div=document.createElement("div");
-div.style="background:white;border-radius:20px;padding:10px;text-align:center;border:2px solid #f1e3da;";
-div.innerHTML=`<img src="${item[2]}" style="width:100%;border-radius:12px;"><div>${item[0]}</div><div style="color:#b88976;font-weight:bold;">${item[1].toLocaleString()}円</div>`;
-grid.appendChild(div);
+const card=document.createElement("div");
+card.style="background:white;border-radius:12px;padding:6px;text-align:center;border:1px solid #f0e2d9;";
+card.innerHTML=`
+<img src="${item[2]}" style="width:100%;border-radius:8px;">
+<div style="font-size:10px;">${item[0]}</div>
+<div style="font-size:11px;font-weight:bold;color:#b88976;">${item[1].toLocaleString()}円</div>
+`;
+grid.appendChild(card);
 });
 });
 
-board.style.display="block";
-
+// 保存ボタン
 const btn=document.createElement("div");
-btn.style="text-align:center;margin-top:15px;";
-btn.innerHTML=`<button onclick="saveMenu()">保存</button> <button onclick="closeMenu()">閉じる</button>`;
+btn.style="text-align:center;margin-top:8px;";
+btn.innerHTML=`<button onclick="saveMenu()">保存</button>`;
 board.appendChild(btn);
 }
 
