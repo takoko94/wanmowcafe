@@ -14,7 +14,7 @@ body {
 
 /* ロゴ */
 .logo {
-  width: 320px;
+  width: 300px;
   margin: 15px auto;
 }
 
@@ -32,7 +32,6 @@ body {
   background: white;
   border-radius: 10px;
   cursor: pointer;
-  white-space: nowrap;
 }
 
 .tab.active {
@@ -62,6 +61,7 @@ body {
   border-radius: 10px;
 }
 
+/* ボタン */
 button {
   margin: 2px;
   padding: 5px 8px;
@@ -90,12 +90,16 @@ button {
 .confirm { background: hotpink; color: white; }
 .reset { background: #ff9999; color: white; }
 
+.history {
+  margin-top: 20px;
+}
 </style>
 </head>
 
 <body>
 
 <img src="logo.png" class="logo">
+<div>wanmowcafe</div>
 
 <!-- タブ -->
 <div class="tabs" id="tabs"></div>
@@ -110,44 +114,84 @@ button {
 <button class="confirm" onclick="confirmOrder()">注文確定</button>
 <button class="reset" onclick="resetCart()">リセット</button>
 
+<div class="history">
+  <h3>注文履歴</h3>
+  <div id="history">まだ注文なし</div>
+</div>
+
 <script>
 const menuData = {
+
   "Drink": [
     ["も～も～ミルクラテ",3000,"milk_latte.png"],
-    ["わんプレッソラテ",3000,"wanpresso.png"]
+    ["わんプレッソラテ",3000,"wanpresso.png"],
+    ["も～っとしゅわっとクリームソーダ",3000,"cream_soda.png"],
+    ["ちょっぴりビターなわんコーヒーフロート",3000,"coffee_float.png"]
   ],
+
   "Food": [
+    ["わんわんサンド",3000,"wanwansand.png"],
     ["わんも～弁当",4000,"wanmow_bento.png"],
-    ["わんも～プレート",6000,"wanmow_plate.png"]
+    ["わんも～プレート",6000,"wanmow_plate.png"],
+    ["ぎゅっとぽかぽかクリームシチュー",3000,"mowmow_stew.png"],
+    ["も～も～ハニートースト",4000,"honey_toast.png"],
+    ["まんぷくハンバーグ",4000,"hamburg.png"]
   ],
+
   "Dessert": [
-    ["いぬぷりん",3000,"pudding_strawberry.png"]
+    ["いぬぷりん（いちご味）",3000,"pudding_strawberry.png"],
+    ["いぬぷりん（マンゴー味）",3000,"pudding_mango.png"]
+  ],
+
+  "Joint": [
+    ["ぷにっとわんくーる",3000,"wan_cool.png"],
+    ["ぷにっとも～くーる",3000,"mow_cool.png"]
+  ],
+
+  "Rescue": [
+    ["も～も～点滴いちごみるく",3000,"strawberry_milk.png"],
+    ["わんわんレスキューサンド",3000,"rescue_sand.png"],
+    ["わんわんレスキュードック",3000,"rescue_dog.png"]
+  ],
+
+  "期間限定": [
+    ["しゅわしゅわオレンジソーダ",5000,"orange_soda.png"],
+    ["わんわんキッシュ",5000,"wan_quiche.png"],
+    ["も～も～キッシュ",5000,"mow_quiche.png"]
+  ],
+
+  "Secret": [
+    ["いちご",4000,"secret_strawberry.png"]
   ]
+
 };
 
 let currentTab = "Drink";
 let total = 0;
 let cart = {};
+let historyList = [];
 
+/* タブ描画 */
 function renderTabs() {
-  const tabsDiv = document.getElementById("tabs");
-  tabsDiv.innerHTML = "";
+  const tabs = document.getElementById("tabs");
+  tabs.innerHTML = "";
 
   for (let key in menuData) {
-    const tab = document.createElement("div");
-    tab.className = "tab" + (key === currentTab ? " active" : "");
-    tab.innerText = key;
+    const div = document.createElement("div");
+    div.className = "tab" + (key === currentTab ? " active" : "");
+    div.innerText = key;
 
-    tab.onclick = () => {
+    div.onclick = () => {
       currentTab = key;
       renderTabs();
       renderMenu();
     };
 
-    tabsDiv.appendChild(tab);
+    tabs.appendChild(div);
   }
 }
 
+/* メニュー描画 */
 function renderMenu() {
   const menu = document.getElementById("menu");
   menu.innerHTML = "";
@@ -177,12 +221,14 @@ function renderMenu() {
   });
 }
 
+/* 加算 */
 function addItem(name, price, qty) {
   total += price * qty;
   cart[name] = (cart[name] || 0) + qty;
   updateUI();
 }
 
+/* 減算 */
 function removeItem(name, price, qty) {
   if (!cart[name]) return;
   cart[name] -= qty;
@@ -194,6 +240,7 @@ function removeItem(name, price, qty) {
   updateUI();
 }
 
+/* UI更新 */
 function updateUI() {
   document.getElementById("total").innerText = total;
 
@@ -201,20 +248,37 @@ function updateUI() {
   for (let item in cart) {
     text += `${item} ×${cart[item]}<br>`;
   }
+
   document.getElementById("cart").innerHTML = text || "注文なし";
 }
 
+/* リセット */
 function resetCart() {
   total = 0;
   cart = {};
   updateUI();
 }
 
+/* 注文確定 */
 function confirmOrder() {
-  alert("注文確定！");
+  if (Object.keys(cart).length === 0) {
+    alert("注文が空です！");
+    return;
+  }
+
+  let text = "";
+  for (let item in cart) {
+    text += `${item} ×${cart[item]} / `;
+  }
+
+  historyList.unshift(`¥${total} | ${text}`);
+  document.getElementById("history").innerHTML =
+    historyList.map(h => `<div>${h}</div>`).join("");
+
   resetCart();
 }
 
+/* 初期表示 */
 renderTabs();
 renderMenu();
 </script>
