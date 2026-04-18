@@ -137,7 +137,7 @@ body{
   font-weight:bold;
 }
 
-/* ===== ボタンエリア（横1列固定） ===== */
+/* ===== ボタンエリア ===== */
 .item div{
   display:flex;
   justify-content:center;
@@ -147,7 +147,7 @@ body{
   overflow:hidden;
 }
 
-/* ===== ボタン（固定サイズ） ===== */
+/* ===== ボタン（ポコアニメ追加） ===== */
 .qty-btn{
   width:42px;
   height:36px;
@@ -159,7 +159,21 @@ body{
   border:none;
   border-radius:999px;
   cursor:pointer;
-  background:#eee;
+
+  /* ポコ感 */
+  box-shadow:0 4px 0 rgba(0,0,0,0.15);
+  transition:all 0.1s ease;
+}
+
+/* ホバー */
+.qty-btn:hover{
+  transform:translateY(-2px);
+}
+
+/* 押した時 */
+.qty-btn:active{
+  transform:translateY(3px);
+  box-shadow:0 1px 0 rgba(0,0,0,0.2);
 }
 
 /* 色 */
@@ -172,7 +186,7 @@ body{
   color:white;
 }
 
-/* 🔥 数字だけ可愛く大きく */
+/* 数字 */
 .qty-num{
   font-size:14px;
   font-weight:bold;
@@ -278,7 +292,6 @@ body{
     display:block;
   }
 
-  /* スマホでも少しだけ大きく */
   .qty-btn{
     width:48px;
     height:40px;
@@ -342,7 +355,6 @@ body{
 
 <script>
 
-/* データ */
 const menuData = {
 
 Drink:[
