@@ -209,7 +209,7 @@ body{
 }
 
 /* =========================
-   🔥 追加（スマホ開閉UI + スワイプ）
+   🔥 追加CSS（スマホのみ）
    ========================= */
 @media screen and (hover: none) and (pointer: coarse){
 
@@ -254,7 +254,6 @@ body{
     background:#ff9ecb;
     border-radius:999px;
     margin:10px auto;
-    display:block;
   }
 
   .item{
@@ -265,10 +264,6 @@ body{
     padding:12px !important;
     font-size:14px !important;
     min-width:44px !important;
-  }
-
-  .tabbar{
-    justify-content:flex-start !important;
   }
 
 }
@@ -312,37 +307,42 @@ body{
 
 <script>
 
-/* 🔥 元のJSそのまま（省略せず維持） */
+/* 🔥 あなたの元JSはそのままここにある前提 */
 
-/* 🔥 追加（スワイプ + トグル） */
+/* 🔥 追加JS（触らない・壊さない） */
 function toggleSidebar(){
-  document.getElementById("sidebar").classList.toggle("open");
+  const el = document.getElementById("sidebar");
+  if(!el) return;
+  el.classList.toggle("open");
 }
 
-let startY = 0;
-let endY = 0;
+(function(){
+  const sidebar = document.getElementById("sidebar");
+  if(!sidebar) return;
 
-const sidebar = document.getElementById("sidebar");
+  let startY = 0;
+  let endY = 0;
 
-sidebar.addEventListener("touchstart", (e) => {
-  startY = e.touches[0].clientY;
-});
+  sidebar.addEventListener("touchstart", (e) => {
+    startY = e.touches[0].clientY;
+  }, {passive:true});
 
-sidebar.addEventListener("touchmove", (e) => {
-  endY = e.touches[0].clientY;
-});
+  sidebar.addEventListener("touchmove", (e) => {
+    endY = e.touches[0].clientY;
+  }, {passive:true});
 
-sidebar.addEventListener("touchend", () => {
-  const diff = startY - endY;
+  sidebar.addEventListener("touchend", () => {
+    const diff = startY - endY;
 
-  if(diff > 50){
-    sidebar.classList.add("open");
-  }
+    if(diff > 50){
+      sidebar.classList.add("open");
+    }
 
-  if(diff < -50){
-    sidebar.classList.remove("open");
-  }
-});
+    if(diff < -50){
+      sidebar.classList.remove("open");
+    }
+  });
+})();
 
 </script>
 
