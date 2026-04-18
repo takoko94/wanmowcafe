@@ -6,7 +6,7 @@
 
 <style>
 
-/* 🔥 フォント読み込み */
+/* フォント */
 @font-face {
   font-family: 'Yasashisa';
   src: url('YasashisaGothicBold-V2.otf') format('opentype');
@@ -15,73 +15,66 @@
 body{
   margin:0;
   font-family:'Yasashisa', sans-serif;
-  background:#fff7f5;
-  user-select:none;
+  background:linear-gradient(180deg,#ffeef3,#fff7fb);
   padding:10px;
-  letter-spacing:0.5px;
 }
 
-/* 中央寄せ */
+/* 全体 */
 .container{
   display:flex;
   justify-content:center;
   max-width:1200px;
   margin:0 auto;
+  gap:20px;
 }
 
-.main{ width:75%; }
+.main{ width:70%; }
 
 .sidebar{
-  width:25%;
-  background:#fffafc;
-  border-left:4px solid #ffc0cb;
-  position:sticky;
-  top:0;
-  height:100vh;
-  overflow-y:auto;
+  width:30%;
+  background:#fff0f5;
+  border-radius:25px;
   padding:20px;
+  box-shadow:0 10px 30px rgba(255,150,180,0.3);
 }
 
 /* ロゴ */
 .logo{
-  width:260px;
+  width:320px;
   display:block;
   margin:10px auto;
-  pointer-events:none;
 }
 
 /* タブ */
 .tabbar{
   display:flex;
   justify-content:center;
-  overflow-x:auto;
-  background:#ffe4ea;
+  flex-wrap:wrap;
+  gap:10px;
   padding:10px;
 }
 
 .tab{
-  margin:0 5px;
-  padding:10px 15px;
-  background:white;
-  border-radius:10px;
+  padding:10px 18px;
+  background:#fff;
+  border-radius:20px;
   cursor:pointer;
-  position:relative;
-  font-weight:bold;
+  box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
 
 .tab.active{
-  background:hotpink;
+  background:linear-gradient(45deg,#ffb6d5,#ff6fa5);
   color:white;
 }
 
 .tab-badge{
   position:absolute;
-  top:-5px;
-  right:-5px;
-  background:hotpink;
+  top:-6px;
+  right:-6px;
+  background:#ff6fa5;
   color:white;
-  font-size:11px;
-  padding:3px 6px;
+  font-size:12px;
+  padding:4px 7px;
   border-radius:999px;
 }
 
@@ -90,105 +83,108 @@ body{
   display:flex;
   flex-wrap:wrap;
   justify-content:center;
-  gap:15px;
-  padding:10px;
+  gap:20px;
 }
 
+/* カード */
 .item{
   width:200px;
   background:white;
-  border-radius:15px;
-  padding:12px;
-  border:2px solid #ffd6dc;
+  border-radius:25px;
+  padding:15px;
+  box-shadow:0 10px 25px rgba(255,150,180,0.25);
+  text-align:center;
   position:relative;
 }
 
 .item img{
   width:100%;
-  border-radius:10px;
-  pointer-events:none;
+  border-radius:15px;
 }
 
+/* 数量 */
 .count-badge{
   position:absolute;
-  top:8px;
-  right:8px;
-  background:hotpink;
+  top:10px;
+  right:10px;
+  background:#ff6fa5;
   color:white;
   border-radius:999px;
-  padding:4px 8px;
-  font-size:12px;
+  padding:5px 10px;
 }
 
 /* ボタン */
 .item div{
   display:flex;
+  flex-wrap:wrap;
   justify-content:center;
-  gap:4px;
-  margin-top:6px;
+  gap:6px;
+  margin-top:8px;
 }
 
 .qty-btn{
-  padding:5px 8px;
+  padding:8px 10px;
   border:none;
   border-radius:999px;
-  font-size:12px;
+  font-size:13px;
+  background:#ffe4ec;
   cursor:pointer;
 }
 
-.minus10{ background:#ffcdd2; }
-.minus1{ background:#ffe0e0; }
+.qty-btn:active{
+  transform:scale(0.9);
+}
+
+.minus10{ background:#ffd6d6; }
+.minus1{ background:#ffe6e6; }
 .zero{ background:#eee; }
-.add1{ background:#ffd6e7; }
+.add1{ background:#ffd6ec; }
 .add10{
-  background:linear-gradient(45deg,pink,hotpink);
+  background:linear-gradient(45deg,#ff9ecb,#ff69b4);
   color:white;
 }
 
 /* カート */
 .cart-title{
-  font-size:20px;
-  font-weight:bold;
+  font-size:22px;
+  text-align:center;
 }
 
 .cart-item{
+  background:white;
+  border-radius:15px;
+  padding:10px;
+  margin-bottom:8px;
   display:flex;
   justify-content:space-between;
-  align-items:center;
-  background:#fff;
-  border-radius:10px;
-  padding:8px;
-  margin-bottom:8px;
-  border:2px dashed #ffd6dc;
 }
 
 .cart-remove{
-  background:#ffb3c1;
+  background:#ff9ecb;
   border:none;
   border-radius:50%;
-  width:22px;
-  height:22px;
-  cursor:pointer;
+  width:24px;
+  height:24px;
 }
 
 /* 合計 */
 .total-box{
   margin-top:15px;
-  padding:10px;
-  background:#ffe4ea;
-  border-radius:10px;
+  padding:12px;
+  background:linear-gradient(45deg,#ffd6ec,#ffeaf5);
+  border-radius:20px;
+  text-align:center;
   font-size:20px;
-  font-weight:bold;
 }
 
 /* ボタン */
 .confirm,.reset{
   width:100%;
-  padding:12px;
+  padding:14px;
   margin-top:10px;
   border-radius:999px;
-  font-size:16px;
-  font-weight:bold;
+  font-size:18px;
+  border:none;
 }
 
 .confirm{
@@ -196,23 +192,20 @@ body{
   color:white;
 }
 
-.reset{ background:#ffd1d1; }
-
-/* 履歴 */
-.history-box{
-  margin-top:20px;
-  background:#fff;
-  border-radius:10px;
-  padding:10px;
-  border:2px solid #ffd6dc;
+.reset{
+  background:#ffe4ec;
 }
 
 /* スマホ */
 @media (max-width:800px){
   .container{ flex-direction:column; }
   .main,.sidebar{ width:100%; }
-  .sidebar{ position:static; height:auto; }
-  .item{ width:45%; }
+  .item{ width:90%; }
+
+  .qty-btn{
+    padding:14px;
+    font-size:16px;
+  }
 }
 
 </style>
@@ -249,57 +242,21 @@ body{
 
 <script>
 
-/* 🔥 メニュー（ここだけ編集すれば増える） */
+/* メニュー */
 const menuData = {
-
 Drink:[
 ["も～も～ミルクラテ",3000,"milk_latte.png"],
-["わんプレッソラテ",3000,"wanpresso.png"],
-["も～っとしゅわっとクリームソーダ",3000,"cream_soda.png"],
-["ちょっぴりビターなわんコーヒーフロート",3000,"coffee_float.png"]
+["わんプレッソラテ",3000,"wanpresso.png"]
 ],
-
 Food:[
-["わんわんサンド",3000,"wanwansand.png"],
 ["わんも～弁当",4000,"wanmow_bento.png"],
-["わんも～プレート",6000,"wanmow_plate.png"],
-["ぎゅっとぽかぽかクリームシチュー",3000,"mowmow_stew.png"],
-["も～も～ハニートースト",4000,"honey_toast.png"],
-["まんぷくハンバーグ",4000,"hamburg.png"]
-],
-
-Dessert:[
-["いぬぷりん（いちご味）",3000,"pudding_strawberry.png"],
-["いぬぷりん（マンゴー味）",3000,"pudding_mango.png"]
-],
-
-Joint:[
-["ぷにっとわんくーる",3000,"wan_cool.png"],
-["ぷにっとも～くーる",3000,"mow_cool.png"]
-],
-
-Rescue:[
-["も～も～点滴いちごみるく",3000,"strawberry_milk.png"],
-["わんわんレスキューサンド",3000,"rescue_sand.png"],
-["わんわんレスキュードック",3000,"rescue_dog.png"]
-],
-
-期間限定:[
-["しゅわしゅわオレンジソーダ",5000,"orange_soda.png"],
-["わんわんキッシュ",5000,"wan_quiche.png"],
-["も～も～キッシュ",5000,"mow_quiche.png"]
-],
-
-Secret:[
-["いちご",4000,"secret_strawberry.png"]
+["わんも～プレート",6000,"wanmow_plate.png"]
 ]
-
 };
 
 let currentTab="Drink";
 let cart={};
 
-/* 合計 */
 function getTotal(){
 let total=0;
 Object.values(menuData).forEach(list=>{
@@ -310,42 +267,25 @@ if(cart[item[0]]) total+=item[1]*cart[item[0]];
 return total;
 }
 
-/* 全更新 */
 function renderAll(){
 renderTabs();
 renderMenu();
 updateUI();
 }
 
-/* タブ */
 function renderTabs(){
 const tabbar=document.getElementById("tabbar");
 tabbar.innerHTML="";
 
 Object.keys(menuData).forEach(key=>{
-let count=0;
-
-menuData[key].forEach(item=>{
-if(cart[item[0]]) count+=cart[item[0]];
-});
-
 const tab=document.createElement("div");
 tab.className="tab"+(key===currentTab?" active":"");
 tab.innerText=key;
-
-if(count>0){
-const badge=document.createElement("div");
-badge.className="tab-badge";
-badge.innerText=count;
-tab.appendChild(badge);
-}
-
 tab.onclick=()=>{currentTab=key;renderAll();};
 tabbar.appendChild(tab);
 });
 }
 
-/* メニュー */
 function renderMenu(){
 const menu=document.getElementById("menu");
 menu.innerHTML="";
@@ -358,7 +298,7 @@ div.className="item";
 
 div.innerHTML=`
 ${count>0?`<div class="count-badge">×${count}</div>`:""}
-<img src="${item[2]}" draggable="false">
+<img src="${item[2]}">
 <p>${item[0]}</p>
 <p>¥${item[1]}</p>
 
@@ -375,7 +315,6 @@ menu.appendChild(div);
 });
 }
 
-/* 操作 */
 function change(name,delta){
 cart[name]=(cart[name]||0)+delta;
 if(cart[name]<=0) delete cart[name];
@@ -392,7 +331,6 @@ delete cart[name];
 renderAll();
 }
 
-/* カート */
 function updateUI(){
 document.getElementById("total").innerText=getTotal();
 
@@ -407,24 +345,12 @@ ${item} ×${cart[item]}
 document.getElementById("cart").innerHTML=html||"注文なし";
 }
 
-/* その他 */
 function resetCart(){
 cart={};
 renderAll();
 }
 
 function confirmOrder(){
-if(Object.keys(cart).length===0) return;
-
-let text="";
-for(let item in cart){
-text+=`${item} ×${cart[item]} / `;
-}
-
-document.getElementById("history").innerHTML =
-`<div>¥${getTotal()} | ${text}</div>` +
-document.getElementById("history").innerHTML;
-
 resetCart();
 }
 
